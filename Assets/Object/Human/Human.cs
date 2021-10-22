@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : MonoBehaviour, isCollision
+public class Human : MonoBehaviour, ICollisionAble
 {
-    public void nowCollision()
+    public void nowCollision(GameObject go)
     {
         GameManager.instance.HumanCollision();
         //Destroy(gameObject);

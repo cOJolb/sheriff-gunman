@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!54 &1440222904
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883178167981609694}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2883178168031701930
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +78,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d74356c4fa628d042878fa06b401fd53, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,7 +129,7 @@ GameObject:
   - component: {fileID: 2883178169341417876}
   m_Layer: 0
   m_Name: End
-  m_TagString: Untagged
+  m_TagString: end
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,7 +243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4233492373764466024, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.04
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 4233492373764466024, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}
       propertyPath: m_LocalRotation.w
@@ -261,8 +277,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: boss
       objectReference: {fileID: 0}
+    - target: {fileID: 4233492373764466025, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}
+      propertyPath: m_TagString
+      value: Boss
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}
+--- !u!1 &2883178167981609694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4233492373764466025, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}
+  m_PrefabInstance: {fileID: 1352058070623778743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2883178167981609695 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4233492373764466024, guid: 31e80240ecfeeb84ba44597609843c36, type: 3}

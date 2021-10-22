@@ -10,7 +10,7 @@ public class CameraMove : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void Update()
+    void LateUpdate()
     {
         switch (GameManager.instance.state)
         {
@@ -18,8 +18,8 @@ public class CameraMove : MonoBehaviour
                 break;
             case GameManager.GameState.Play:
                 var cameraPos = player.transform.position;
-                cameraPos.y += 20;
-                cameraPos.z -= 20;
+                cameraPos.y += 10;
+                cameraPos.z -= 10;
 
                 transform.position = cameraPos;
                 transform.LookAt(player.transform);
