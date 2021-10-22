@@ -10,6 +10,7 @@ TagManager:
   - EquipItem
   - end
   - Boss
+  - road
   layers:
   - Default
   - TransparentFX
