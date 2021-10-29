@@ -2516,7 +2516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5977809812067931243, guid: 0580b7605afecd446ad04336b26b5228, type: 3}
       propertyPath: Editor_Tabs1
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5977809812067931243, guid: 0580b7605afecd446ad04336b26b5228, type: 3}
       propertyPath: Editor_Tabs2

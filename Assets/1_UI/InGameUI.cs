@@ -14,6 +14,7 @@ public class InGameUI : MonoBehaviour
     public GameObject GameStart;
     private void Start()
     {
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
     private void Update()
     {
