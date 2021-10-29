@@ -4,12 +4,21 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Stair
+  - Climb
+  - Fly
   - Enemy
   - Human
   - Item
   - EquipItem
   - end
   - Boss
+  - road
+  - Animal
+  - Water
+  - Particle
+  - Horse
+  - BossHorse
   layers:
   - Default
   - TransparentFX
@@ -20,6 +29,10 @@ TagManager:
   - 
   - 
   - Enemy
+  - Item
+  - Obstacle
+  - Player
+  - Dummy
   - 
   - 
   - 
@@ -27,11 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Animal
   - 
   - 
   - 
