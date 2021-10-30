@@ -117,12 +117,13 @@ public class GameManager : MonoBehaviour
 
                     bossTimingImage.Setting(bossTiming, sliderWidth, bossTimingRange);
                     break;
+                case GameState.RunOver:
+                    StartCoroutine(CoBossStart());
+                    break;
                 case GameState.Boss:
                     Timing = Random.Range(1f, 5f); // 타이밍 범위 지정
                     break;
                 case GameState.finish:
-                    break;
-                case GameState.RunOver:
                     break;
                 case GameState.GameOver:
                     if (horseState != Horse.HorseState.Sleep)
@@ -208,9 +209,7 @@ public class GameManager : MonoBehaviour
     {
         var fadeinout = InGameUI.GetComponentInChildren<FadeInOut>();
         var img = fadeinout.GetComponent<Image>();
-        state = GameState.RunOver;
-        //Debug.LogError("dd");
-        //StopAllCoroutines();
+
         yield return StartCoroutine(fadeinout.CoFadeInOut(img.color, Color.black, 2f));
         state = GameState.Boss;
     }

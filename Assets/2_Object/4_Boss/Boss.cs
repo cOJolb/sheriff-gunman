@@ -54,8 +54,10 @@ public class Boss : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.RunOver:
+                
                 break;
             case GameManager.GameState.Boss:
+                
                 break;
             case GameManager.GameState.finish:
                 break;
@@ -96,12 +98,15 @@ public class Boss : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.RunOver:
+                animal.State_Activate(10);
                 break;
             case GameManager.GameState.Boss:
+                ani.SetInteger("State", 0);
                 break;
             case GameManager.GameState.finish:
                 break;
             case GameManager.GameState.GameOver:
+                ani.SetInteger("State", 0);
                 break;
             default:
                 break;

@@ -47,7 +47,6 @@ public class Cowboy : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            //animal.State_Activate(2);
             ani.SetInteger("WeaponAction", 101);
             ani.SetInteger("WeaponType", 300);
             ani.SetBool("WeaponHand", false);
@@ -135,9 +134,10 @@ public class Cowboy : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.RunOver:
+                var rider = GetComponent<MalbersAnimations.HAP.MRider>();
+                rider.DismountAnimal();
                 break;
             case GameManager.GameState.Boss:
-                rider.DismountAnimal();
                 break;
             case GameManager.GameState.finish:
                 var boss = GameObject.FindGameObjectWithTag("Boss");
@@ -168,4 +168,5 @@ public class Cowboy : MonoBehaviour
     {
         GameManager.instance.FinishDirecting();
     }
+
 }

@@ -206,8 +206,7 @@ public class Horse : MonoBehaviour
                 follow.followSpeed = bossSpeed;
                 animal.SetFloatParameter(animal.hash_Vertical, 2f);
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
-                //animal.AlwaysForward = false;
-                //follow.follow = false;
+
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;
@@ -228,7 +227,7 @@ public class Horse : MonoBehaviour
 
     public void disMount()
     {
-        StartCoroutine(Cotest());
+        StartCoroutine(CoDisMount());
     }
     IEnumerator CoSpeedDown()
     {
@@ -239,9 +238,9 @@ public class Horse : MonoBehaviour
         }
         isSpeedZero = true;
     }
-    IEnumerator Cotest()
+    IEnumerator CoDisMount()
     {
-        var targetPos = transform.position - transform.forward * 1f - transform.right * 1f;
+        var targetPos = transform.position - transform.forward * 2f - transform.right * 2f;
         yield return StartCoroutine(CoMoveToTarget(0.6f,targetPos));
         yield return new WaitForSeconds(0.6f);  
         ani.SetInteger("ModeStatus", 2);
@@ -257,18 +256,18 @@ public class Horse : MonoBehaviour
         var totalTime = 0f;
         while (totalTime <= duration)
         {
+            Debug.Log(targetPos);
             totalTime += Time.deltaTime;
             transform.position = Vector3.Lerp(transform.position, targetPos, totalTime / duration);
             yield return null;
         }
-        Debug.Log("test");
 
         ani.SetInteger("ModeStatus", 0);
         ani.SetInteger("Mode", 4006);
         ani.SetInteger("State", 5);
         
         var cowboy = GameObject.FindGameObjectWithTag("Player");
-        cowboy.transform.Rotate(new Vector3(0, 270f, 0));
-        Debug.Log("test2");
+        var boss = GameObject.FindGameObjectWithTag("Boss");
+        cowboy.transform.LookAt(boss.transform.position);
     }
 }

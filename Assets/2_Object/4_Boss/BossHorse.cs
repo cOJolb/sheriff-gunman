@@ -69,14 +69,15 @@ public class BossHorse : MonoBehaviour
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;
                 follow.follow = false;
+                animal.State_Activate(10);
                 break;
             case GameManager.GameState.Boss:
                 break;
             case GameManager.GameState.finish:
                 break;
             case GameManager.GameState.GameOver:
-                follow.follow = false;
-                ani.SetInteger("State", 0);
+                //follow.follow = false;
+                //ani.SetInteger("State", 0);
                 break;
             default:
                 break;
