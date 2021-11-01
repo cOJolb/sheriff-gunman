@@ -12,6 +12,8 @@ public class InGameUI : MonoBehaviour
     public GameObject speedUpBar;
     public GameObject GameOverUI;
     public GameObject GameStart;
+    public GameObject StageClear;
+    public GameObject progressbar;
     private void Start()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
@@ -40,22 +42,29 @@ public class InGameUI : MonoBehaviour
         {
             case GameManager.GameState.Start:
                 GameStart.SetActive(false);
+                speedUpBar.SetActive(false);
                 break;
             case GameManager.GameState.Play:
+                progressbar.SetActive(true);
+                speedUpBar.SetActive(true);
                 break;
             case GameManager.GameState.Trace:
+                speedUpBar.SetActive(false);
                 bossBattle.SetActive(true);
                 break;
             case GameManager.GameState.Boss:
-                //bossBattle.SetActive(true); 타이밍바
+                bossBattle.SetActive(false);
+                progressbar.SetActive(false);
                 break;
             case GameManager.GameState.finish:
                 bossTiming.SetActive(false);
                 break;
             case GameManager.GameState.GameOver:
-                //bossBattle.SetActive(false);
+                bossBattle.SetActive(false);
                 bossTiming.SetActive(false);
-                //GameOverUI.SetActive(true);
+                break;
+            case GameManager.GameState.ReStart:
+                GameOverUI.SetActive(false);
                 break;
             default:
                 break;
@@ -75,5 +84,9 @@ public class InGameUI : MonoBehaviour
     public void OnGameOver()
     {
         GameOverUI.SetActive(true);
+    }
+    public void OnClear()
+    {
+        StageClear.SetActive(true);
     }
 }

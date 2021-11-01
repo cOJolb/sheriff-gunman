@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class Boss : MonoBehaviour
     public enum BossAnimation
     {
         finish,
-        Death
+        Death,
+        Stand
     }
     bool isMount;
     private void Start()
@@ -54,16 +56,19 @@ public class Boss : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.RunOver:
-                
                 break;
             case GameManager.GameState.Boss:
-                
                 break;
             case GameManager.GameState.finish:
                 break;
             case GameManager.GameState.GameOver:
                 break;
             case GameManager.GameState.ReStart:
+                if (GameManager.instance.PrevState == GameManager.GameState.Boss)
+                {
+
+                    LookCowboy();
+                }
                 break;
             default:
                 break;
@@ -85,12 +90,16 @@ public class Boss : MonoBehaviour
             case BossAnimation.Death:
                 ani.SetTrigger("Death");
                 break;
+            case BossAnimation.Stand:
+                ani.SetTrigger("Stand");
+                break;
             default:
                 break;
         }
     }
     public void StateInit(GameManager.GameState state)
     {
+        
         switch (state)
         {
             case GameManager.GameState.Start:
@@ -98,25 +107,48 @@ public class Boss : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.RunOver:
+                transform.position =
+                    new Vector3(transform.position.x, 0, transform.position.z);
                 animal.State_Activate(10);
                 break;
             case GameManager.GameState.Boss:
-                ani.SetInteger("State", 0);
+                SetAnimation(BossAnimation.Stand);
+                LookCowboy();
+                transform.position = GameManager.instance.cowboy.transform.position +
+GameManager.instance.cowboy.transform.forward * 6f;
                 break;
             case GameManager.GameState.finish:
                 break;
             case GameManager.GameState.GameOver:
-                ani.SetInteger("State", 0);
+                break;
+            case GameManager.GameState.ReStart:
+                switch (GameManager.instance.PrevState)
+                {
+                    case GameManager.GameState.Play:
+                        break;
+                    case GameManager.GameState.Trace:
+                        break;
+                    case GameManager.GameState.Boss:
+                        LookCowboy();
+                        SetAnimation(BossAnimation.Stand);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
         }
     }
+
+    public void LookCowboy()
+    {
+        //var cowboy = GameObject.FindGameObjectWithTag("Player");
+        transform.LookAt(GameManager.instance.cowboy.transform.position);
+    }
     public void BossShoot()
     {
-        var cowboy = GameObject.FindGameObjectWithTag("Player");
-
-        transform.LookAt(cowboy.transform.position);
+        LookCowboy();
         transform.Rotate(new Vector3(0, 90f, 0));
 
         SetAnimation(BossAnimation.finish);
@@ -133,10 +165,15 @@ public class Boss : MonoBehaviour
     }
     public void shooting()
     {
+        var cowboy = GameManager.instance.cowboy;
+        var cowboyScript = cowboy.GetComponent<Cowboy>();
+
+
         shootingParticle.gameObject.SetActive(true);
         shootingParticle.transform.position = muzzle.transform.position;
-        var cowboy = GameObject.FindWithTag("Player");
-        var cowboyScript = cowboy.GetComponent<Cowboy>();
+        shootingParticle.transform.LookAt(cowboy.GetComponent<Collider>().bounds.center);
+
+
         cowboyScript.SetAnimation(Cowboy.PlayerAnimation.Death);
     }
     public void FinishDirecting()

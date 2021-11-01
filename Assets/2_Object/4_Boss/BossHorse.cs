@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using MalbersAnimations.Events;
 using MalbersAnimations.Scriptables;
@@ -13,6 +14,13 @@ public class BossHorse : MonoBehaviour
     float totalTime = 0f;
     bool startDash;
     public float speed = 5f;
+    public Image progress;
+    public GameObject damageParticle;
+    public GameObject failParticle;
+
+    private double prevPercentage;
+
+
     Dreamteck.Splines.SplineFollower follow;
     private void Start()
     {
@@ -63,8 +71,12 @@ public class BossHorse : MonoBehaviour
                 
                 break;
             case GameManager.GameState.Play:
-                //animal.AlwaysForward = true;
-                //follow.follow = true;
+                animal.AlwaysForward = true;
+                follow.follow = true;
+                break;
+            case GameManager.GameState.Trace:
+                //animal.AlwaysForward = false;
+                //follow.follow = false;
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;
@@ -72,12 +84,45 @@ public class BossHorse : MonoBehaviour
                 animal.State_Activate(10);
                 break;
             case GameManager.GameState.Boss:
+                //ani.SetInteger("State", 0);
                 break;
             case GameManager.GameState.finish:
                 break;
             case GameManager.GameState.GameOver:
-                //follow.follow = false;
+                switch (GameManager.instance.PrevState)
+                {
+                    case GameManager.GameState.Play:
+                        prevPercentage = follow.GetPercent();
+                        break;
+                    case GameManager.GameState.Trace:
+                        prevPercentage = follow.GetPercent();
+                        FinishDirecting();
+                        break;
+                    case GameManager.GameState.Boss:
+                        animal.AlwaysForward = false;
+                        follow.follow = false;
+                        break;
+                    default:
+                        break;
+                }
+
                 //ani.SetInteger("State", 0);
+                break;
+            case GameManager.GameState.ReStart:
+                //재시작 초기화
+                switch (GameManager.instance.PrevState)
+                {
+                    case GameManager.GameState.Play:
+                        follow.SetPercent(prevPercentage);
+                        break;
+                    case GameManager.GameState.Trace:
+                        follow.SetPercent(prevPercentage);
+                        break;
+                    case GameManager.GameState.Boss:
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;

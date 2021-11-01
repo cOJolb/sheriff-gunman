@@ -50,7 +50,8 @@ public class PolygonBeamStatic : MonoBehaviour
 
            if (justOne >= 2)
            {
-               gameObject.SetActive(false);
+                justOne = 0;
+                gameObject.SetActive(false);
            }
            if (beam) //Updates the beam
            {

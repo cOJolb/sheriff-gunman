@@ -5,12 +5,17 @@ using UnityEngine.UI;
 
 public class Enemy : isCollision, ICollisionAble
 {
+    public Animator ani;
+
     Dreamteck.Splines.SplineFollower follow;
     public SetPos setPos;
     public float timeSpeed;
     public Image portrait;
     public GameObject ragDoll;
+    public GameObject model;
     public Image progress;
+
+    bool isCatch;
 
     void Start()
     {
@@ -22,24 +27,35 @@ public class Enemy : isCollision, ICollisionAble
 
     void Update()
     {
-        switch (GameManager.instance.state)
+
+    }
+    public void StateInit(GameManager.GameState value)
+    {
+        if (!isCatch)
         {
-            case GameManager.GameState.Start:
-                follow.follow = true;
-                break;
-            case GameManager.GameState.Play:
-                break;
-            case GameManager.GameState.Boss:
-                follow.follow = false;
-                break;
-            case GameManager.GameState.finish:
-                follow.follow = false;
-                break;
-            case GameManager.GameState.GameOver:
-                follow.follow = false;
-                break;
-            default:
-                break;
+            switch (value)
+            {
+                case GameManager.GameState.Start:
+                    follow.follow = true;
+                    break;
+                case GameManager.GameState.Play:
+                    follow.follow = true;
+                    ani.SetInteger("State", 0);
+                    break;
+                case GameManager.GameState.Boss:
+                    follow.follow = false;
+                    break;
+                case GameManager.GameState.finish:
+                    follow.follow = false;
+                    break;
+                case GameManager.GameState.GameOver:
+                    ani.SetInteger("State", 1);
+                    follow.follow = false;
+                    transform.LookAt(GameManager.instance.cowboy.transform.position);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     private void OnCollisionEnter(Collision other)
@@ -52,20 +68,13 @@ public class Enemy : isCollision, ICollisionAble
     }
     public void nowCollision(GameObject go)
     {
-        var posIndex = GameManager.instance.EnemyCollision(gameObject);
-
-        var newGo = Instantiate(ragDoll);
-        switch (posIndex)
-        {
-            case 0:
-                newGo.transform.position = go.transform.position;
-                break;
-            default:
-                newGo.transform.position = go.transform.position;
-                break;
-        }
-        var joint = newGo.GetComponentInChildren<SpringJoint>();
+        //¸ðµ¨Àº ²ô°í ·ºµ¹Àº ÄÑ¼­ ²ø·Á°¡´Â ¿¬Ãâ on
+        GameManager.instance.EnemyCollision(gameObject);
+        follow.follow = false;
+        model.SetActive(false);
+        ragDoll.SetActive(true);
+        var joint = ragDoll.GetComponentInChildren<SpringJoint>();
         joint.connectedBody = go.GetComponent<Rigidbody>();
-        Destroy(gameObject);
+        isCatch = true; 
     }
 }

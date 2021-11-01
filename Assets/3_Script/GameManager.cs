@@ -19,11 +19,11 @@ public class GameManager : MonoBehaviour
     //endSpace end;
     //CameraMove mainCamera;
 
-    GameObject cowboy;
-    GameObject horse;
+    public GameObject cowboy;
+    public GameObject horse;
 
-    GameObject boss;
-    GameObject bossHorse;
+    public GameObject boss;
+    public GameObject bossHorse;
     GameObject[] enemys;
     GameObject[] items;
     GameObject[] obstacles;
@@ -33,19 +33,23 @@ public class GameManager : MonoBehaviour
     private List<GameObject> enemylist = new List<GameObject>();
     private List<Vector2> portratePos = new List<Vector2>();
     private List<Image> enemyProgress = new List<Image>();
-    //private Image[] enemyProgresses;
+
+    private Image bossProgress;
+
     float totalTime;
     int startCount;
 
     float Timing;
     bool TimingOn;
-    bool bossFightStart;
+    public bool tooEarly;
 
     float bossTiming;         
     float bossTimingRange;    
     int life;                 
 
     bool finishDirecting;
+
+    
     public bool finishAction
     {
         get
@@ -63,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    Horse.HorseState horseState = Horse.HorseState.Run;
+    //Horse.HorseState horseState = Horse.HorseState.Run;
     public enum GameState
     {
         Idle,
@@ -77,6 +81,15 @@ public class GameManager : MonoBehaviour
         ReStart
     }
     private GameState gameState;
+    private GameState prevState;
+
+    public GameState PrevState
+    {
+        get
+        {
+            return prevState;
+        }
+    }
     public GameState state
     {
         get
@@ -86,6 +99,8 @@ public class GameManager : MonoBehaviour
         set
         {
             totalTime = 0f;
+            finishDirecting = false;
+
             gameState = value;
             InGameUI.StateInit(value);
             horse.GetComponent<Horse>().StateInit(value);
@@ -93,6 +108,10 @@ public class GameManager : MonoBehaviour
             boss.GetComponent<Boss>().StateInit(value);
             mainCamera.GetComponent<CameraMove>().StateInit(value);
             bossHorse.GetComponent<BossHorse>().StateInit(value);
+            foreach (var enemy in enemys)
+            {
+                enemy.GetComponent<Enemy>().StateInit(value);
+            }
             switch (gameState)
             {
                 case GameState.Start:
@@ -102,13 +121,13 @@ public class GameManager : MonoBehaviour
                         var enemyScript = enemys[i].GetComponent<Enemy>();
                         enemyProgress.Add(InGameUI.EnemyProgress(enemyScript.progress));
                     }
+                    bossProgress = InGameUI.EnemyProgress(bossHorse.GetComponent<BossHorse>().progress);
                     break;
                 case GameState.Play:
-                    for (int i = 0; i < enemys.Length; i++)
-                    {
-                    }
+                    prevState = GameState.Play;
                     break;
                 case GameState.Trace:
+                    prevState = GameState.Trace;
                     bossTimingRange = 0.2f; //범위  0~1
                     bossTiming = Random.Range(bossTimingRange, 1- bossTimingRange);
                     var bossTimingImage = InGameUI.bossBattle.GetComponentInChildren<test>();
@@ -118,18 +137,25 @@ public class GameManager : MonoBehaviour
                     bossTimingImage.Setting(bossTiming, sliderWidth, bossTimingRange);
                     break;
                 case GameState.RunOver:
-                    StartCoroutine(CoBossStart());
+                    FadeInOut(5f);
                     break;
                 case GameState.Boss:
+                    prevState = GameState.Boss;
                     Timing = Random.Range(1f, 5f); // 타이밍 범위 지정
                     break;
                 case GameState.finish:
                     break;
                 case GameState.GameOver:
-                    if (horseState != Horse.HorseState.Sleep)
+                    if (/*horseState != Horse.HorseState.Sleep && */!tooEarly && prevState != GameState.Play)
                     {
                         boss.GetComponent<Boss>().BossShoot();
                     }
+                    break;
+                case GameState.ReStart:
+                    //리스타트를 위한 보스전 초기화
+                    TimingOn = false;
+                    tooEarly = false;
+
                     break;
                 default:
                     break;
@@ -158,7 +184,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(state);
+        //Debug.Log(state);
         switch (state)
         {
             case GameState.Start:
@@ -170,6 +196,9 @@ public class GameManager : MonoBehaviour
             case GameState.Trace:
                 TraceUpdate();
                 break;
+            case GameState.RunOver:
+                RunOverUpdate();
+                break;
             case GameState.Boss:
                 BossUpdate();
                 break;
@@ -177,7 +206,12 @@ public class GameManager : MonoBehaviour
                 GameOverUpdate();
                 break;
             case GameState.finish:
+                FinishUpdate();
                 break;
+            case GameState.ReStart:
+                RestartUpdate();
+                break;
+
             default:
                 break;
         }
@@ -192,9 +226,11 @@ public class GameManager : MonoBehaviour
     public void HumanCollision()
     {
         var horseScript = horse.GetComponent<Horse>();
+        var cowboyScript = cowboy.GetComponent<Cowboy>();
         if (horseScript.SpeedZero)
         {
-            horseScript.hstate = Horse.HorseState.Sleep;
+            cowboyScript.SetAnimation(Cowboy.PlayerAnimation.DisMount);
+            state = GameState.GameOver;
         }
     }
     public void ItemCollision()
@@ -203,15 +239,14 @@ public class GameManager : MonoBehaviour
     }
     public void endCollision()
     {
-        StartCoroutine(CoBossStart());
+        //StartCoroutine(CoBossStart());
     }
-    IEnumerator CoBossStart()
+    private void FadeInOut(float duration)
     {
         var fadeinout = InGameUI.GetComponentInChildren<FadeInOut>();
         var img = fadeinout.GetComponent<Image>();
 
-        yield return StartCoroutine(fadeinout.CoFadeInOut(img.color, Color.black, 2f));
-        state = GameState.Boss;
+        StartCoroutine(fadeinout.CoFadeInOut(img.color, Color.black, duration));
     }
     private void StartUpdate()
     {
@@ -223,6 +258,7 @@ public class GameManager : MonoBehaviour
         }
         if (startCount <= 0)
         {
+            Debug.Log("playplay");
             state = GameState.Play;
         }
     }
@@ -230,21 +266,12 @@ public class GameManager : MonoBehaviour
     {
         var horseScript = horse.GetComponent<Horse>();
         var cowboyScript = cowboy.GetComponent<Cowboy>();
-        float value = (float)horse.GetComponent<Dreamteck.Splines.SplineFollower>().GetPercent();
-        var progressbar = InGameUI.GetComponentInChildren<ProgressBar>();
-        progressbar.SettingValue(value);
-        for (int i = 0; i < enemyProgress.Count; i++)
-        {
-            if (enemyProgress[i] != null && enemylist[i] != null)
-            {
-                var enemyPos = (float)enemylist[i].GetComponent<Dreamteck.Splines.SplineFollower>().GetPercent();
-                var sliderWidth = (float)progressbar.GetComponent<RectTransform>().sizeDelta.x;
-                enemyProgress[i].GetComponent<EnemyProgress>().SettingValue(enemyPos, sliderWidth);
-            }
-        }
+        ProgressSetting();
+        //스피드업 게이지 세팅
         float speedValue = horseScript.SpeedUpValue;
-        InGameUI.speedUpBar.GetComponentInChildren<SpeedBar>().SettingValue(speedValue / 2f);
+        InGameUI.speedUpBar.GetComponentInChildren<SpeedBar>().SettingValue(speedValue / 4f);
 
+        //보스와 일정거리만큼 좁혀지면 추격상태 돌입
         if(Vector3.Distance(horse.transform.position,bossHorse.transform.position) <= catchRange)
         {
             state = GameState.Trace;
@@ -252,6 +279,9 @@ public class GameManager : MonoBehaviour
     }
     private void TraceUpdate()
     {
+        ProgressSetting();
+
+        //타이밍바
         totalTime += Time.deltaTime;
         var timeSpeed = 2f;// 게이지 왔다갔다 속도 
         if (totalTime >= timeSpeed)
@@ -268,6 +298,7 @@ public class GameManager : MonoBehaviour
         var slider = InGameUI.bossBattle.GetComponentInChildren<Slider>();
         slider.value = nowTiming;
 
+        //타이밍바 조작
         #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
@@ -283,7 +314,7 @@ public class GameManager : MonoBehaviour
                }
                else
                {
-                   state = GameState.GameOver;
+                    state = GameState.GameOver;
                }
            }
         }
@@ -317,6 +348,37 @@ public class GameManager : MonoBehaviour
         }
         #endif    
     }
+    private void ProgressSetting()
+    {
+        float value = (float)horse.GetComponent<Dreamteck.Splines.SplineFollower>().GetPercent();
+        var progressbar = InGameUI.GetComponentInChildren<ProgressBar>();
+        var sliderWidth = (float)progressbar.GetComponent<RectTransform>().sizeDelta.x;
+
+        //플레이어 진행바 세팅
+        progressbar.SettingValue(value);
+
+        //악당들 진행바 세팅
+        for (int i = 0; i < enemyProgress.Count; i++)
+        {
+            if (enemyProgress[i] != null && enemylist[i] != null)
+            {
+                var enemyPos = (float)enemylist[i].GetComponent<Dreamteck.Splines.SplineFollower>().GetPercent();
+                enemyProgress[i].GetComponent<EnemyProgress>().SettingValue(enemyPos, sliderWidth);
+            }
+        }
+
+        //보스 진행바 세팅
+        var bossPos = (float)bossHorse.GetComponent<Dreamteck.Splines.SplineFollower>().GetPercent();
+        bossProgress.GetComponent<EnemyProgress>().SettingValue(bossPos, sliderWidth);
+
+    }
+    private void RunOverUpdate()
+    {
+        if(finishDirecting)
+        {
+            state = GameState.Boss;
+        }
+    }
     private void BossUpdate()
     {
         totalTime += Time.deltaTime;
@@ -338,11 +400,42 @@ public class GameManager : MonoBehaviour
     }
     private void GameOverUpdate()
     {
-        finishDirecting = true;
         if (finishDirecting)
         {
             InGameUI.GetComponent<InGameUI>().OnGameOver();
-            //SetActive(true);
+        }
+    }
+    private void FinishUpdate()
+    {
+        if(finishDirecting)
+        {
+            InGameUI.GetComponent<InGameUI>().OnClear();
+        }
+    }
+    private void RestartUpdate()
+    {
+        //switch (prevState)
+        //{
+        //    case GameState.Play:
+        //        totalTime += Time.deltaTime;
+        //        if(totalTime > 2f)
+        //        {
+        //            state = prevState;
+        //        }
+        //        break;
+        //    case GameState.Trace:
+        //    case GameState.Boss:
+        //        if (finishDirecting)
+        //        {
+        //            state = prevState;
+        //        }
+        //        break;
+        //    default:
+        //        break;
+        //}
+        if (finishDirecting)
+        {
+            state = prevState;
         }
     }
     public void TimingTouch()
@@ -354,10 +447,12 @@ public class GameManager : MonoBehaviour
             {
                 if (totalTime >= Timing)
                 {
+                    tooEarly = false;
                     state = GameState.finish;
                 }
                 else
                 {
+                    tooEarly = true;
                     state = GameState.GameOver;
                 }
             }
@@ -369,57 +464,49 @@ public class GameManager : MonoBehaviour
         {
             if (totalTime >= Timing)
             {
+                tooEarly = false;
                 state = GameState.finish;
             }
             else
             {
+                tooEarly = true;
                 state = GameState.GameOver;
             }
         }
     }
-    public void HorseStateInit(Horse.HorseState value)
-    {
-        horseState = value;
-        switch (value)
-        {
-            case Horse.HorseState.Run:
-                break;
-            case Horse.HorseState.Sleep:
-                var cowboyScript = cowboy.GetComponent<Cowboy>();
-                cowboyScript.HorseSleepSoWhat();
-                state = GameState.GameOver;
-                break;
-            case Horse.HorseState.Death:
-                break;
-            default:
-                break;
-        }
-    }
-    public void BossRun()
-    {
-        horse.GetComponent<Horse>().hstate = Horse.HorseState.Sleep;
-    }
-    public void GameStart()
+    //public void HorseStateInit(Horse.HorseState value)//말의 상태에 따른 
+    //{
+    //    horseState = value;
+    //    switch (value)
+    //    {
+    //        case Horse.HorseState.Run:
+    //            break;
+    //        case Horse.HorseState.Sleep:
+    //            var cowboyScript = cowboy.GetComponent<Cowboy>();
+    //            cowboyScript.SetAnimation(Cowboy.PlayerAnimation.DisMount);
+    //            state = GameState.GameOver;
+    //            break;
+    //        case Horse.HorseState.Death:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
+    //public void BossRun()//말이 움직이지 못하는 상태 ?
+    //{
+    //    horse.GetComponent<Horse>().hstate = Horse.HorseState.Sleep;
+    //}
+    public void GameStart() // 게임 스타트
     {
         state = GameState.Start;
     }
-    public void GameReStart()
+    public void GameReStart() // 게임 리스타트(광고 클릭)
     {
         state = GameState.ReStart;
     }
-    public void FinishDirecting()
+    public void FinishDirecting() // 종료연출이 끝남
     {
+        Debug.Log("finishdirecting");
         finishDirecting = true;
     }
-    //public enum dataType
-    //{
-    //    intiger,
-    //    boollen,
-    //    triger,
-    //    floatType
-    //}
-    //public void AnimationSetting(dataType type, string name, int Ivalue = 0, float Fvalue = 0f,bool Bvalue = false)
-    //{
-
-    //}
 }

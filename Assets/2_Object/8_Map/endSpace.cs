@@ -9,7 +9,7 @@ public class endSpace : MonoBehaviour, ICollisionAble
         var enemylayer = LayerMask.NameToLayer("Enemy");
         if (go.layer == enemylayer)
         {
-            GameManager.instance.BossRun();
+            //GameManager.instance.BossRun();
             Destroy(go);
         }
         else

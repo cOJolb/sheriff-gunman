@@ -14,9 +14,15 @@ public class Horse : MonoBehaviour
 
     float speedUpTime;
     float totalspeedUpTime;
-    float speedAni;
+    float speedUp;
     bool isSpeedDown;
     bool isSpeedZero = true;
+
+    Vector3 SleepPos;
+
+    private Vector3 prevPos;
+
+    public float speedDown = 0.5f;
 
     public MalbersAnimations.Controller.MAnimal animal;
     public bool SpeedZero
@@ -30,11 +36,11 @@ public class Horse : MonoBehaviour
     {
         get
         {
-            return speedAni;
+            return speedUp;
         }
         set
         {
-            speedAni = value;
+            speedUp = value;
         }
     }
     private ItemList playerGetItem;
@@ -45,39 +51,39 @@ public class Horse : MonoBehaviour
             return playerGetItem;
         }
     }
-    public enum HorseState
-    {
-        Idle,
-        Run,
-        Sleep,
-        Death
-    }
-    private HorseState horseState;
-    public HorseState hstate
-    {
-        get
-        {
-            return horseState;
-        }
-        set
-        {
-            horseState = value;
-            GameManager.instance.HorseStateInit(value);
-            switch (value)
-            {
-                case HorseState.Run:
-                    break;
-                case HorseState.Sleep:
-                    follow.follow = false;
-                    ani.SetInteger("State", 0);
-                    break;
-                case HorseState.Death:
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    //public enum HorseState
+    //{
+    //    Idle,
+    //    Run,
+    //    Sleep,
+    //    Death
+    //}
+    //private HorseState horseState;
+    //public HorseState hstate
+    //{
+    //    get
+    //    {
+    //        return horseState;
+    //    }
+    //    set
+    //    {
+    //        horseState = value;
+    //        GameManager.instance.HorseStateInit(value);
+    //        switch (value)
+    //        {
+    //            case HorseState.Run:
+    //                break;
+    //            case HorseState.Sleep:
+    //                follow.follow = false;
+    //                ani.SetInteger("State", 0);
+    //                break;
+    //            case HorseState.Death:
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
+    //}
     Touch touch;
     public float speed = 5f;
     Dreamteck.Splines.SplineFollower follow;
@@ -87,32 +93,32 @@ public class Horse : MonoBehaviour
         follow = GetComponent<Dreamteck.Splines.SplineFollower>();
         follow.follow = false;
         follow.followSpeed = speed;
-        horseState = HorseState.Idle;
+        //horseState = HorseState.Idle;
         //StartCoroutine(CoSpeedDown());
     }
     void Update()
     {
         transform.rotation = follow.transform.rotation;
-        //follow.followSpeed = speed + (int)(speedAni / 0.5f);
 
-        if (speedAni > 0f && !isSpeedDown && isSpeedZero)
-        {
-            isSpeedDown = true;
-        }
-        if(isSpeedDown && isSpeedZero)
-        {
-            StartCoroutine(CoSpeedDown());
-            isSpeedDown = false;
-            isSpeedZero = false;
-        }
         switch (GameManager.instance.state)
         {
             case GameManager.GameState.Start:
                 break;
             case GameManager.GameState.Play:
-                follow.followSpeed = speed + (int)(speedAni / 0.5f);
-                animal.SetFloatParameter(animal.hash_Vertical, 2f + speedAni);
+                //이펙트 재생을 위한 현재 아이템 보유 상태 확인
+                if (CheckItem(ItemList.SpeedUp))
+                {
+                    SpeedUpUpdate();
+                }
+
+                // 아이템에 따른 스피드 설정
+                follow.followSpeed = speed + (int)speedUp;
+
+                // 애니메이션 설정
+                animal.SetFloatParameter(animal.hash_Vertical, 1f + speedUp);
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
+
+                //좌우 이동
 #if UNITY_EDITOR
                 var h = Input.GetAxis("Horizontal");
                 if (h != 0)
@@ -132,6 +138,17 @@ public class Horse : MonoBehaviour
                     }
                 }
 #endif
+                //게이지 감소 
+                if(speedUp>0)
+                {
+                    speedUp -= Time.deltaTime * speedDown;
+                    isSpeedZero = false;
+                }
+                if(speedUp <= 0)
+                {
+                    speedUp = 0;
+                    isSpeedZero = true;
+                }
                 break;
             case GameManager.GameState.Boss:
                 break;
@@ -139,10 +156,7 @@ public class Horse : MonoBehaviour
                 break;
         }
 
-        if (CheckItem(ItemList.SpeedUp))
-        {
-            SpeedUpUpdate();
-        }
+
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -164,7 +178,11 @@ public class Horse : MonoBehaviour
                 {
                     SpeedUpParticle.SetActive(true);
                 }
-                speedAni += 0.5f;
+                speedUp += itemValue;
+                if(speedUp >= 4f)
+                {
+                    speedUp = 4f;
+                }
                 break;
             case ItemList.None:
                 break;
@@ -180,7 +198,6 @@ public class Horse : MonoBehaviour
         if (totalspeedUpTime >= speedUpTime)
         {
             totalspeedUpTime = 0f;
-            follow.followSpeed = speed;
             SpeedUpParticle.SetActive(false);
             playerGetItem &= (~ItemList.SpeedUp);
         }
@@ -196,17 +213,28 @@ public class Horse : MonoBehaviour
             case GameManager.GameState.Start:
                 break;
             case GameManager.GameState.Play:
-                horseState = HorseState.Run;
+                //horseState = HorseState.Run;
                 animal.AlwaysForward = true;
                 follow.follow = true;
                 break;
             case GameManager.GameState.Trace:
+                //이동하세요
+                animal.AlwaysForward = true;
+                follow.follow = true;
+
+                //장애물에 부딪혀도 종료안되게
+                isSpeedZero = false;
+                //스피드업 이펙트 끄기
+                SpeedUpParticle.SetActive(false);
+
+                // 보스의 이동속도랑 동일하게 추격
                 var bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
                 var bossSpeed = bossHorse.GetComponent<BossHorse>().speed;
                 follow.followSpeed = bossSpeed;
+
+                // 애니메이션 걷기로 설정 (뛰면 눈이 아래로 향해서 너무 어지러움)
                 animal.SetFloatParameter(animal.hash_Vertical, 2f);
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
-
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;
@@ -220,6 +248,23 @@ public class Horse : MonoBehaviour
                 follow.follow = false;
                 ani.SetInteger("State", 0);
                 break;
+            case GameManager.GameState.ReStart:
+                switch (GameManager.instance.PrevState)
+                {
+                    case GameManager.GameState.Play:
+                        animal.Mode_Stop();
+                        StartCoroutine(CoMoveToTarget(1f,0.8f, SleepPos));
+                        break;
+                    case GameManager.GameState.Trace:
+                        FinishDirecting();
+                        break;
+                    case GameManager.GameState.Boss:
+                        break;
+                    default:
+                        break;
+                }
+                
+                break;
             default:
                 break;
         }
@@ -227,32 +272,27 @@ public class Horse : MonoBehaviour
 
     public void disMount()
     {
+        SleepPos = transform.position;
         StartCoroutine(CoDisMount());
-    }
-    IEnumerator CoSpeedDown()
-    {
-        while (speedAni>0f)
-        {
-            speedAni -= 0.05f;
-            yield return new WaitForSeconds(0.5f);
-        }
-        isSpeedZero = true;
+        //animal.ForceAction(4, 6);
+        animal.Mode_TryActivate(4, 6);
     }
     IEnumerator CoDisMount()
     {
         var targetPos = transform.position - transform.forward * 2f - transform.right * 2f;
-        yield return StartCoroutine(CoMoveToTarget(0.6f,targetPos));
+        yield return StartCoroutine(CoMoveToTarget(0.5f,0.6f,targetPos));
         yield return new WaitForSeconds(0.6f);  
-        ani.SetInteger("ModeStatus", 2);
-        var cowboy = GameObject.FindGameObjectWithTag("Player");
+        //ani.SetInteger("ModeStatus", 2);
+        var cowboy = GameManager.instance.cowboy;
         var cowboyScript = cowboy.GetComponent<Cowboy>();
-        if (horseState == HorseState.Sleep)
+        if (GameManager.instance.PrevState == GameManager.GameState.Play)
         {
             cowboyScript.SetAnimation(Cowboy.PlayerAnimation.Sad);
         }
     }
-    IEnumerator CoMoveToTarget(float duration, Vector3 targetPos)
+    IEnumerator CoMoveToTarget(float delay, float duration, Vector3 targetPos)
     {
+        yield return new WaitForSeconds(delay);
         var totalTime = 0f;
         while (totalTime <= duration)
         {
@@ -261,13 +301,19 @@ public class Horse : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, targetPos, totalTime / duration);
             yield return null;
         }
+        //animal.PlayAction(4,6);
+        //animal.Mode_TryActivate(4, 6);
 
-        ani.SetInteger("ModeStatus", 0);
-        ani.SetInteger("Mode", 4006);
-        ani.SetInteger("State", 5);
+        //ani.SetInteger("ModeStatus", 0);
+        //ani.SetInteger("Mode", 4006);
+        //ani.SetInteger("State", 5);
         
         var cowboy = GameObject.FindGameObjectWithTag("Player");
         var boss = GameObject.FindGameObjectWithTag("Boss");
         cowboy.transform.LookAt(boss.transform.position);
+    }
+    public void FinishDirecting()
+    {
+        GameManager.instance.FinishDirecting();
     }
 }

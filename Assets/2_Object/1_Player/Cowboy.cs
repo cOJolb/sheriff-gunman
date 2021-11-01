@@ -13,17 +13,19 @@ public class Cowboy : MonoBehaviour
     public Weapon weapon;
     
     GameObject muzzle;
-    GameObject shootingParticle;
+    public GameObject shootingParticle;
 
     Touch touch;
     bool isMount;
+    Vector3 prevPos;
     public enum PlayerAnimation
     {
         Idle,
         finish,
         Death,
         Sad,
-        MountShoot
+        MountShoot,
+        DisMount
     }
     private void Start()
     {
@@ -45,26 +47,30 @@ public class Cowboy : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ani.SetInteger("WeaponAction", 101);
-            ani.SetInteger("WeaponType", 300);
-            ani.SetBool("WeaponHand", false);
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ani.SetInteger("WeaponAction", 0);
-            ani.SetInteger("WeaponType", 0);
-            ani.SetBool("WeaponHand", false);
-        }
+        //총쏘는 애니메이션 테스트
+        //if(Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    ani.SetInteger("WeaponAction", 101);
+        //    ani.SetInteger("WeaponType", 300);
+        //    ani.SetBool("WeaponHand", false);
+        //}
+        //if(Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    ani.SetInteger("WeaponAction", 0);
+        //    ani.SetInteger("WeaponType", 0);
+        //    ani.SetBool("WeaponHand", false);
+        //}
     }
+
     public void StopShooting()
     {
-        Debug.Log("test");
         ani.SetInteger("WeaponAction", 0);
         ani.SetInteger("WeaponType", 0);
         ani.SetBool("WeaponHand", false);
+
+        SetAnimation(PlayerAnimation.DisMount);
     }
+    
     private void FixedUpdate()
     {
         if (!isMount && GameManager.instance.state != GameManager.GameState.Idle)
@@ -83,13 +89,14 @@ public class Cowboy : MonoBehaviour
         switch (setAni)
         {
             case PlayerAnimation.Idle:
-                ani.SetInteger("State", 0);
+                ani.SetTrigger("Stand");
                 break;
             case PlayerAnimation.finish:
                 ani.SetTrigger("finish");
                 break;
             case PlayerAnimation.Death:
-                ani.SetInteger("State", 10);
+                ani.SetTrigger("Death");
+                //ani.SetInteger("State", 10);
                 break;
             case PlayerAnimation.Sad:
                 ani.SetTrigger("PlayerSad");
@@ -99,6 +106,11 @@ public class Cowboy : MonoBehaviour
                 ani.SetInteger("WeaponType", 0);
                 ani.SetBool("WeaponHand", false);
                 break;
+            case PlayerAnimation.DisMount:
+                var rider = GetComponent<MalbersAnimations.HAP.MRider>();
+                rider.DismountAnimal();
+                break;
+
             default:
                 break;
         }
@@ -112,24 +124,42 @@ public class Cowboy : MonoBehaviour
     {
         gunPos.gameObject.SetActive(true);
         weaponPos.gameObject.SetActive(false);
+        //if (GameManager.instance.tooEarly)
+        //{
+        //    GameManager.instance.boss.GetComponent<Boss>().BossShoot();
+        //}
     }
     public void shooting()
     {
         var boss = GameObject.FindGameObjectWithTag("Boss");
-
+        var bossScript = boss.GetComponent<Boss>();
         shootingParticle.gameObject.SetActive(true);
         shootingParticle.transform.position = muzzle.transform.position;
-        shootingParticle.transform.LookAt(boss.GetComponent<Collider>().bounds.center);
 
-        var bossScript = boss.GetComponent<Boss>();
-        bossScript.SetAnimation(Boss.BossAnimation.Death);
+        if (GameManager.instance.tooEarly)
+        {
+            shootingParticle.transform.LookAt(boss.transform.position
+                + new Vector3(3f,0,0));
+            GameManager.instance.boss.GetComponent<Boss>().BossShoot();
+        }
+        else
+        {
+            shootingParticle.transform.LookAt(boss.GetComponent<Collider>().bounds.center);
+            bossScript.SetAnimation(Boss.BossAnimation.Death);
+        }
+
     }
 
     public void StateInit(GameManager.GameState state)
     {
+        var horse = GameManager.instance.horse;
+        var boss = GameManager.instance.boss;
         switch (state)
         {
             case GameManager.GameState.Start:
+                transform.LookAt(horse.transform.position);
+                ani.SetInteger("State", 1);
+                animal.SetFloatParameter(animal.hash_Vertical, 3f);
                 break;
             case GameManager.GameState.Play:
                 break;
@@ -138,17 +168,39 @@ public class Cowboy : MonoBehaviour
                 rider.DismountAnimal();
                 break;
             case GameManager.GameState.Boss:
+                //보스전 포지션 저장 애니메이션때문에 이동됨
+                prevPos = transform.position;
                 break;
             case GameManager.GameState.finish:
-                var boss = GameObject.FindGameObjectWithTag("Boss");
-               
                 transform.LookAt(boss.transform.position);
                 transform.Rotate(new Vector3(0, 90f, 0));
 
                 SetAnimation(PlayerAnimation.finish);
                 break;
             case GameManager.GameState.GameOver:
-                
+                if(GameManager.instance.tooEarly)
+                {
+                    transform.LookAt(boss.transform.position);
+                    transform.Rotate(new Vector3(0, 90f, 0));
+                    SetAnimation(PlayerAnimation.finish);
+                }
+                break;
+            case GameManager.GameState.ReStart:
+                switch (GameManager.instance.PrevState)
+                {
+                    case GameManager.GameState.Play:
+                        break;
+                    case GameManager.GameState.Trace:
+                        break;
+                    case GameManager.GameState.Boss:
+                        SetAnimation(PlayerAnimation.Idle);
+                        transform.LookAt(boss.transform.position);
+                        transform.position = prevPos;
+                        FinishDirecting();
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
@@ -156,14 +208,10 @@ public class Cowboy : MonoBehaviour
     }
     public void disMount()
     {
-        var horse = GameObject.FindGameObjectWithTag("Horse");
+        var horse = GameManager.instance.horse;
         horse.GetComponent<Horse>().disMount();
     }
-    public void HorseSleepSoWhat()
-    {
-        var rider = GetComponent<MalbersAnimations.HAP.MRider>();
-        rider.DismountAnimal();
-    }
+
     public void FinishDirecting()
     {
         GameManager.instance.FinishDirecting();
