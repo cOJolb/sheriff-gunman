@@ -9,12 +9,14 @@ using MalbersAnimations.Scriptables;
 public class Horse : MonoBehaviour
 {
     public GameObject SpeedUpParticle;
+    public float distance;
 
     Animator ani;
 
     float speedUpTime;
     float totalspeedUpTime;
     float speedUp;
+    
     bool isSpeedDown;
     bool isSpeedZero = true;
 
@@ -90,9 +92,12 @@ public class Horse : MonoBehaviour
     private void Start()
     {
         ani = GetComponent<Animator>();
-        follow = GetComponent<Dreamteck.Splines.SplineFollower>();
+
+        follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
+        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = speed;
+        follow.SetDistance(distance);
         //horseState = HorseState.Idle;
         //StartCoroutine(CoSpeedDown());
     }
@@ -114,9 +119,6 @@ public class Horse : MonoBehaviour
                 // 아이템에 따른 스피드 설정
                 follow.followSpeed = speed + (int)speedUp;
 
-                // 애니메이션 설정
-                animal.SetFloatParameter(animal.hash_Vertical, 1f + speedUp);
-                animal.SetFloatParameter(animal.hash_Horizontal, 0f);
 
                 //좌우 이동
 #if UNITY_EDITOR
@@ -138,10 +140,14 @@ public class Horse : MonoBehaviour
                     }
                 }
 #endif
+                // 애니메이션 설정
+                animal.SetFloatParameter(animal.hash_Vertical, 1f + speedUp);
+                animal.SetFloatParameter(animal.hash_Horizontal, h);
+
                 //게이지 감소 
-                if(speedUp>0)
+                if (speedUp>0)
                 {
-                    speedUp -= Time.deltaTime * speedDown;
+                    speedUp -= (Time.deltaTime * speedDown) / 4f;
                     isSpeedZero = false;
                 }
                 if(speedUp <= 0)
@@ -155,8 +161,6 @@ public class Horse : MonoBehaviour
             default:
                 break;
         }
-
-
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -221,7 +225,7 @@ public class Horse : MonoBehaviour
                 //이동하세요
                 animal.AlwaysForward = true;
                 follow.follow = true;
-
+                animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 //장애물에 부딪혀도 종료안되게
                 isSpeedZero = false;
                 //스피드업 이펙트 끄기
@@ -246,7 +250,8 @@ public class Horse : MonoBehaviour
                 break;
             case GameManager.GameState.GameOver:
                 follow.follow = false;
-                ani.SetInteger("State", 0);
+                //ani.SetInteger("State", 0);
+                animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 break;
             case GameManager.GameState.ReStart:
                 switch (GameManager.instance.PrevState)
@@ -279,7 +284,7 @@ public class Horse : MonoBehaviour
     }
     IEnumerator CoDisMount()
     {
-        var targetPos = transform.position - transform.forward * 2f - transform.right * 2f;
+        var targetPos = transform.position - transform.forward * 3f/* - transform.right * 2f*/;
         yield return StartCoroutine(CoMoveToTarget(0.5f,0.6f,targetPos));
         yield return new WaitForSeconds(0.6f);  
         //ani.SetInteger("ModeStatus", 2);

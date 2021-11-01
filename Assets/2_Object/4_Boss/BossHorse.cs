@@ -17,7 +17,7 @@ public class BossHorse : MonoBehaviour
     public Image progress;
     public GameObject damageParticle;
     public GameObject failParticle;
-
+    public float distance;
     private double prevPercentage;
 
 
@@ -25,10 +25,11 @@ public class BossHorse : MonoBehaviour
     private void Start()
     {
         ani = GetComponent<Animator>();
-        follow = GetComponent<Dreamteck.Splines.SplineFollower>();
+        follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
+        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = speed;
-
+        follow.SetDistance(distance);
     }
     void Update()
     {

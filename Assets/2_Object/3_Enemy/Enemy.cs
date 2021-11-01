@@ -14,14 +14,17 @@ public class Enemy : isCollision, ICollisionAble
     public GameObject ragDoll;
     public GameObject model;
     public Image progress;
+    public float distance;
 
     bool isCatch;
 
     void Start()
     {
         follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
+        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = timeSpeed;
+        follow.SetDistance(distance);
         PosSetting(setPos);
     }
 
@@ -52,6 +55,10 @@ public class Enemy : isCollision, ICollisionAble
                     ani.SetInteger("State", 1);
                     follow.follow = false;
                     transform.LookAt(GameManager.instance.cowboy.transform.position);
+                    break;
+                case GameManager.GameState.Trace:
+                    follow.follow = true;
+                    ani.SetInteger("State", 0);
                     break;
                 default:
                     break;

@@ -6,6 +6,7 @@ public class Item : isCollision, ICollisionAble
 {
     public SetPos setPos;
     public ItemType itemType;
+    public float distance;
     public void nowCollision(GameObject go)
     {
         switch (itemType.type)
@@ -27,6 +28,9 @@ public class Item : isCollision, ICollisionAble
 
     void Start()
     {
+        var positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
+        positioner.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+        positioner.SetDistance(distance);
         PosSetting(setPos);
     }
     

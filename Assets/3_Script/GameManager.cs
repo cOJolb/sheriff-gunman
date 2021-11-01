@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     GameObject[] obstacles;
     GameObject end;
     GameObject mainCamera;
+    public GameObject road;
 
     private List<GameObject> enemylist = new List<GameObject>();
     private List<Vector2> portratePos = new List<Vector2>();
@@ -110,7 +111,10 @@ public class GameManager : MonoBehaviour
             bossHorse.GetComponent<BossHorse>().StateInit(value);
             foreach (var enemy in enemys)
             {
-                enemy.GetComponent<Enemy>().StateInit(value);
+                if (enemy != null)
+                {
+                    enemy.GetComponent<Enemy>().StateInit(value);
+                }
             }
             switch (gameState)
             {
@@ -165,10 +169,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-    void Start()
-    {
-        startCount = 3;
         cowboy = GameObject.FindWithTag("Player");
         horse = GameObject.FindGameObjectWithTag("Horse");
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -178,6 +178,21 @@ public class GameManager : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss");
         end = GameObject.FindGameObjectWithTag("end");
         bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
+        road = GameObject.FindGameObjectWithTag("road");
+    }
+    void Start()
+    {
+        startCount = 3;
+        //cowboy = GameObject.FindWithTag("Player");
+        //horse = GameObject.FindGameObjectWithTag("Horse");
+        //mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        //enemys = GameObject.FindGameObjectsWithTag("Enemy");
+        //items = GameObject.FindGameObjectsWithTag("Item");
+        //obstacles = GameObject.FindGameObjectsWithTag("Human");
+        //boss = GameObject.FindGameObjectWithTag("Boss");
+        //end = GameObject.FindGameObjectWithTag("end");
+        //bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
+        //road = GameObject.FindGameObjectWithTag("road");
         //playerPos = end.transform.position;
         state = GameState.Idle;
     }
@@ -414,29 +429,32 @@ public class GameManager : MonoBehaviour
     }
     private void RestartUpdate()
     {
-        //switch (prevState)
-        //{
-        //    case GameState.Play:
-        //        totalTime += Time.deltaTime;
-        //        if(totalTime > 2f)
-        //        {
-        //            state = prevState;
-        //        }
-        //        break;
-        //    case GameState.Trace:
-        //    case GameState.Boss:
-        //        if (finishDirecting)
-        //        {
-        //            state = prevState;
-        //        }
-        //        break;
-        //    default:
-        //        break;
-        //}
-        if (finishDirecting)
+        switch (prevState)
         {
-            state = prevState;
+            case GameState.Play:
+                if (finishDirecting)
+                {
+                    totalTime += Time.deltaTime;
+                    if (totalTime > 2f)
+                    {
+                        state = prevState;
+                    }
+                }
+                break;
+            case GameState.Trace:
+            case GameState.Boss:
+                if (finishDirecting)
+                {
+                    state = prevState;
+                }
+                break;
+            default:
+                break;
         }
+        //if (finishDirecting)
+        //{
+        //    state = prevState;
+        //}
     }
     public void TimingTouch()
     {

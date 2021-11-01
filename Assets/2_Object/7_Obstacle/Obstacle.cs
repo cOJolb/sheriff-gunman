@@ -5,6 +5,7 @@ using UnityEngine;
 public class Obstacle : isCollision, ICollisionAble
 {
     public SetPos setPos;
+    public float distance;
     public void nowCollision(GameObject go)
     {
         GameManager.instance.HumanCollision();
@@ -17,6 +18,9 @@ public class Obstacle : isCollision, ICollisionAble
     }
     void Start()
     {
+        var positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
+        positioner.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+        positioner.SetDistance(distance);
         PosSetting(setPos);
     }
 
