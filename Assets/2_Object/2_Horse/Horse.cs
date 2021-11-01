@@ -141,7 +141,7 @@ public class Horse : MonoBehaviour
                 //게이지 감소 
                 if(speedUp>0)
                 {
-                    speedUp -= Time.deltaTime * speedDown;
+                    speedUp -= (Time.deltaTime * speedDown)/4f;
                     isSpeedZero = false;
                 }
                 if(speedUp <= 0)
