@@ -110,8 +110,12 @@ public class GameManager : MonoBehaviour
             bossHorse.GetComponent<BossHorse>().StateInit(value);
             foreach (var enemy in enemys)
             {
-                enemy.GetComponent<Enemy>().StateInit(value);
+                if (enemy != null)
+                {
+                    enemy.GetComponent<Enemy>().StateInit(value);
+                }
             }
+
             switch (gameState)
             {
                 case GameState.Start:
