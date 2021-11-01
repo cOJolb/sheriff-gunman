@@ -403,21 +403,21 @@ MonoBehaviour:
   targetRigidbody2D: {fileID: 0}
   targetTransform: {fileID: 7124200837161403229}
   _result:
-    position: {x: -0.00000023841858, y: 0, z: 0}
+    position: {x: 4.9999995, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 1, y: 0, z: 0}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
-    percent: 0.09418604216671028
+    percent: 0.10360464710196383
   _finalResult:
-    position: {x: -0.00000023841858, y: 0, z: 0}
+    position: {x: 4.9999995, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 1, y: 0, z: 0}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
-    percent: 0.09418604216671028
+    percent: 0.10360464710196383
   _targetObject: {fileID: 0}
-  _position: 50
+  _position: 55
   _mode: 1
 --- !u!65 &677541581581165572
 BoxCollider:
@@ -519,6 +519,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4011987612724448, guid: 8e1b9f27f7848e04d978a04698ebd6c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 64915178316744842, guid: 8e1b9f27f7848e04d978a04698ebd6c9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
