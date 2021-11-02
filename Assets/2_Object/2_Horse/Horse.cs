@@ -10,6 +10,7 @@ public class Horse : MonoBehaviour
 {
     public GameObject SpeedUpParticle;
     public float distance;
+    public float sensitive;
     public Material[] materials;
     public GameObject horseModel;
     public MalbersAnimations.HAP.MountTriggers[] mounts;
@@ -141,7 +142,7 @@ public class Horse : MonoBehaviour
                     if (touch.phase == TouchPhase.Moved)
                     {
                         h = touch.deltaPosition.x;
-                        follow.motion.offset = new Vector2(follow.motion.offset.x + (touch.deltaPosition.x * 0.01f)/3f, follow.motion.offset.y);
+                        follow.motion.offset = new Vector2(follow.motion.offset.x + (touch.deltaPosition.x * GameManager.instance.sensitive/100f)/ sensitive, follow.motion.offset.y);
                         //transform.position += transform.right * touch.deltaPosition.x * 0.01f;
                     }
                 }

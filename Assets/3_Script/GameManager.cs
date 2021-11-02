@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public InGameUI InGameUI;
-    public float catchRange = 10f;
+    
     Vector3 playerPos;
 
     private int HorseSkinNumber = 0;
@@ -53,19 +53,25 @@ public class GameManager : MonoBehaviour
     float totalTime;
     int startCount;
 
+    public float sensitive;
+    public float catchRange = 10f;
+
     float startTime;
     float Timing;
     bool TimingOn;
+    [HideInInspector]
     public bool tooEarly;
 
     float bossTiming;         
-    float bossTimingRange;    
+    public float bossTimingRange;
+    public float bosstime;
     int life;                 
 
     bool finishDirecting;
 
     int enemyCatch;
-
+    [HideInInspector]
+    public int totalEnemyCatch;
     public bool finishAction
     {
         get
@@ -150,7 +156,7 @@ public class GameManager : MonoBehaviour
                 case GameState.Trace:
                     startTime = Time.realtimeSinceStartup;
                     prevState = GameState.Trace;
-                    bossTimingRange = 0.2f; //범위  0~1
+                    //bossTimingRange = 0.2f; //범위  0~1
                     bossTiming = Random.Range(bossTimingRange, 1- bossTimingRange);
                     var bossTimingImage = InGameUI.bossBattle.GetComponentInChildren<test>();
                     var slider = InGameUI.bossBattle.GetComponentInChildren<Slider>();
@@ -442,7 +448,7 @@ public class GameManager : MonoBehaviour
         }
         //TimingTouch();
         TimingClick();
-        if (totalTime >= Timing + boss.GetComponent<Boss>().Timing)
+        if (totalTime >= Timing + bosstime)
         {
             state = GameState.GameOver;
         }
