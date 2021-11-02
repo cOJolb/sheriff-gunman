@@ -8,12 +8,16 @@ using MalbersAnimations.Scriptables;
 
 public class Horse : MonoBehaviour
 {
+    public Material[] materials;
+    public MalbersAnimations.HAP.MountTriggers[] mounts;
+    public MalbersAnimations.Controller.MAnimal animal;
     public GameObject SpeedUpParticle;
+    public GameObject horseModel;
+
     public float distance;
     public float sensitive;
-    public Material[] materials;
-    public GameObject horseModel;
-    public MalbersAnimations.HAP.MountTriggers[] mounts;
+    public float speedDown = 0.5f;
+    public float speed = 5f;
     Animator ani;
 
     float speedUpTime;
@@ -27,9 +31,9 @@ public class Horse : MonoBehaviour
 
     private Vector3 prevPos;
 
-    public float speedDown = 0.5f;
+    
 
-    public MalbersAnimations.Controller.MAnimal animal;
+    
     public bool SpeedZero
     {
         get 
@@ -90,7 +94,6 @@ public class Horse : MonoBehaviour
     //    }
     //}
     Touch touch;
-    public float speed = 5f;
     Dreamteck.Splines.SplineFollower follow;
     private void Start()
     {
@@ -162,7 +165,8 @@ public class Horse : MonoBehaviour
                 //게이지 감소 
                 if (speedUp>0)
                 {
-                    speedUp -= (Time.deltaTime * speedDown) / 4f;
+                    //speedUp -= (Time.deltaTime * speedDown) / 4f;
+                    speedUp -= Time.deltaTime/speedDown ;
                     isSpeedZero = false;
                 }
                 if(speedUp <= 0)

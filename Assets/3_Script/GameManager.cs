@@ -554,9 +554,17 @@ public class GameManager : MonoBehaviour
     //{
     //    horse.GetComponent<Horse>().hstate = Horse.HorseState.Sleep;
     //}
+    public void BossRun()
+    {
+
+    }
     public void GameStart() // 게임 스타트
     {
         state = GameState.Start;
+    }
+    public void GameOver()
+    {
+        state = GameState.GameOver;
     }
     public void GameReStart() // 게임 리스타트(광고 클릭)
     {

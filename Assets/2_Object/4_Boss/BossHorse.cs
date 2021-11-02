@@ -131,6 +131,14 @@ public class BossHorse : MonoBehaviour
                 break;
         }
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "end")
+        {
+            GameManager.instance.GameOver();
+            GameManager.instance.BossRun();
+        }
+    }
     public void FinishDirecting()
     {
         GameManager.instance.FinishDirecting();
