@@ -10,7 +10,9 @@ public class Horse : MonoBehaviour
 {
     public GameObject SpeedUpParticle;
     public float distance;
-
+    public Material[] materials;
+    public GameObject horseModel;
+    public MalbersAnimations.HAP.MountTriggers[] mounts;
     Animator ani;
 
     float speedUpTime;
@@ -94,12 +96,12 @@ public class Horse : MonoBehaviour
         ani = GetComponent<Animator>();
 
         follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
-        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+        //follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = speed;
         follow.SetDistance(distance);
-        //horseState = HorseState.Idle;
-        //StartCoroutine(CoSpeedDown());
+
+        SetSkin(GameManager.instance.HorseSkin);
     }
     void Update()
     {
@@ -121,25 +123,37 @@ public class Horse : MonoBehaviour
 
 
                 //좌우 이동
-#if UNITY_EDITOR
-                var h = Input.GetAxis("Horizontal");
-                if (h != 0)
-                {
-                    follow.motion.offset = new Vector2(follow.motion.offset.x + h * 10f * Time.deltaTime, follow.motion.offset.y);
-                }
-                //transform.position += transform.right * h * 10f * Time.deltaTime;
-#endif
-#if UNITY_ANDROID
+                //#if UNITY_EDITOR
+                //                var h = Input.GetAxis("Horizontal");
+                //                if (h != 0)
+                //                {
+                //                    follow.motion.offset = new Vector2(follow.motion.offset.x + h * 10f * Time.deltaTime, follow.motion.offset.y);
+                //                }
+                //                //transform.position += transform.right * h * 10f * Time.deltaTime;
+                //#endif
+                //#if UNITY_ANDROID
+
+                float h = 0f;
+
                 if (Input.touchCount == 1)
                 {
                     touch = Input.GetTouch(0);
                     if (touch.phase == TouchPhase.Moved)
                     {
-                        follow.motion.offset = new Vector2(follow.motion.offset.x + touch.deltaPosition.x * 0.01f, follow.motion.offset.y);
+                        h = touch.deltaPosition.x;
+                        follow.motion.offset = new Vector2(follow.motion.offset.x + (touch.deltaPosition.x * 0.01f)/3f, follow.motion.offset.y);
                         //transform.position += transform.right * touch.deltaPosition.x * 0.01f;
                     }
                 }
-#endif
+                if(follow.motion.offset.x > 4f)
+                {
+                    follow.motion.offset = new Vector2(4f, follow.motion.offset.y);
+                }
+                else if(follow.motion.offset.x < -4f)
+                {
+                    follow.motion.offset = new Vector2(-4f, follow.motion.offset.y);
+                }
+//#endif
                 // 애니메이션 설정
                 animal.SetFloatParameter(animal.hash_Vertical, 1f + speedUp);
                 animal.SetFloatParameter(animal.hash_Horizontal, h);
@@ -258,7 +272,7 @@ public class Horse : MonoBehaviour
                 {
                     case GameManager.GameState.Play:
                         animal.Mode_Stop();
-                        StartCoroutine(CoMoveToTarget(1f,0.8f, SleepPos));
+                        StartCoroutine(CoMoveToTarget(1f,0.8f, SleepPos,true));
                         break;
                     case GameManager.GameState.Trace:
                         FinishDirecting();
@@ -274,7 +288,13 @@ public class Horse : MonoBehaviour
                 break;
         }
     }
-
+    public void SetSkin(int value)
+    {
+        //말 스킨 적용
+        var meshrender = horseModel.GetComponent<SkinnedMeshRenderer>().materials;
+        meshrender[0] = materials[value];
+        horseModel.GetComponent<SkinnedMeshRenderer>().materials = meshrender;
+    }
     public void disMount()
     {
         SleepPos = transform.position;
@@ -285,7 +305,7 @@ public class Horse : MonoBehaviour
     IEnumerator CoDisMount()
     {
         var targetPos = transform.position - transform.forward * 3f/* - transform.right * 2f*/;
-        yield return StartCoroutine(CoMoveToTarget(0.5f,0.6f,targetPos));
+        yield return StartCoroutine(CoMoveToTarget(0.5f,0.6f,targetPos,false));
         yield return new WaitForSeconds(0.6f);  
         //ani.SetInteger("ModeStatus", 2);
         var cowboy = GameManager.instance.cowboy;
@@ -295,8 +315,10 @@ public class Horse : MonoBehaviour
             cowboyScript.SetAnimation(Cowboy.PlayerAnimation.Sad);
         }
     }
-    IEnumerator CoMoveToTarget(float delay, float duration, Vector3 targetPos)
+    IEnumerator CoMoveToTarget(float delay, float duration, Vector3 targetPos, bool autoMount)
     {
+        AutoMount(autoMount);
+
         yield return new WaitForSeconds(delay);
         var totalTime = 0f;
         while (totalTime <= duration)
@@ -306,16 +328,17 @@ public class Horse : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, targetPos, totalTime / duration);
             yield return null;
         }
-        //animal.PlayAction(4,6);
-        //animal.Mode_TryActivate(4, 6);
-
-        //ani.SetInteger("ModeStatus", 0);
-        //ani.SetInteger("Mode", 4006);
-        //ani.SetInteger("State", 5);
         
         var cowboy = GameObject.FindGameObjectWithTag("Player");
         var boss = GameObject.FindGameObjectWithTag("Boss");
         cowboy.transform.LookAt(boss.transform.position);
+    }
+    public void AutoMount(bool value)
+    {
+        foreach (var mount in mounts)
+        {
+            mount.AutoMount.Value = value;
+        }
     }
     public void FinishDirecting()
     {

@@ -9,6 +9,19 @@ public class GameManager : MonoBehaviour
     public float catchRange = 10f;
     Vector3 playerPos;
 
+    private int HorseSkinNumber = 0;
+    public int HorseSkin
+    {
+        get
+        {
+            return HorseSkinNumber;
+        }
+        set
+        {
+            HorseSkinNumber = value;
+            horse.GetComponent<Horse>().SetSkin(value);
+        }
+    }
     //Cowboy cowboy;
     //Horse horse;
 
@@ -40,6 +53,7 @@ public class GameManager : MonoBehaviour
     float totalTime;
     int startCount;
 
+    float startTime;
     float Timing;
     bool TimingOn;
     public bool tooEarly;
@@ -50,7 +64,8 @@ public class GameManager : MonoBehaviour
 
     bool finishDirecting;
 
-    
+    int enemyCatch;
+
     public bool finishAction
     {
         get
@@ -101,6 +116,7 @@ public class GameManager : MonoBehaviour
         {
             totalTime = 0f;
             finishDirecting = false;
+            Time.timeScale = 1f;
 
             gameState = value;
             InGameUI.StateInit(value);
@@ -109,6 +125,7 @@ public class GameManager : MonoBehaviour
             boss.GetComponent<Boss>().StateInit(value);
             mainCamera.GetComponent<CameraMove>().StateInit(value);
             bossHorse.GetComponent<BossHorse>().StateInit(value);
+
             foreach (var enemy in enemys)
             {
                 if (enemy != null)
@@ -131,6 +148,7 @@ public class GameManager : MonoBehaviour
                     prevState = GameState.Play;
                     break;
                 case GameState.Trace:
+                    startTime = Time.realtimeSinceStartup;
                     prevState = GameState.Trace;
                     bossTimingRange = 0.2f; //범위  0~1
                     bossTiming = Random.Range(bossTimingRange, 1- bossTimingRange);
@@ -139,6 +157,8 @@ public class GameManager : MonoBehaviour
                     var sliderWidth = slider.gameObject.GetComponent<RectTransform>().sizeDelta.x;
 
                     bossTimingImage.Setting(bossTiming, sliderWidth, bossTimingRange);
+
+                    Time.timeScale = 0.5f;
                     break;
                 case GameState.RunOver:
                     FadeInOut(5f);
@@ -200,6 +220,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //Debug.Log(state);
+        Debug.Log(enemyCatch);
         switch (state)
         {
             case GameState.Start:
@@ -233,6 +254,7 @@ public class GameManager : MonoBehaviour
     }
     public int EnemyCollision(GameObject Enemy)
     {
+        enemyCatch++;
         var index = enemylist.FindIndex((x) => x == Enemy);
         Destroy(enemyProgress[index]);
         return index;
@@ -295,13 +317,24 @@ public class GameManager : MonoBehaviour
     private void TraceUpdate()
     {
         ProgressSetting();
+        //현재 시간으로 맞춰주자! 
+
+        totalTime = Time.realtimeSinceStartup - startTime;
+
 
         //타이밍바
-        totalTime += Time.deltaTime;
+        //totalTime += Time.deltaTime;
+        
         var timeSpeed = 2f;// 게이지 왔다갔다 속도 
-        if (totalTime >= timeSpeed)
+        //왔다갔다 반복
+        //if (totalTime >= timeSpeed) 
+        //{
+        //    totalTime = 0f;
+        //}
+        //한번만
+        if(totalTime >= timeSpeed/2f)
         {
-            totalTime = 0f;
+            state = GameState.GameOver;
         }
 
         var nowTiming = totalTime / (timeSpeed/2f);
@@ -309,6 +342,7 @@ public class GameManager : MonoBehaviour
         {
             nowTiming = 2f - nowTiming;
         }
+        
 
         var slider = InGameUI.bossBattle.GetComponentInChildren<Slider>();
         slider.value = nowTiming;
@@ -424,7 +458,7 @@ public class GameManager : MonoBehaviour
     {
         if(finishDirecting)
         {
-            InGameUI.GetComponent<InGameUI>().OnClear();
+            InGameUI.GetComponent<InGameUI>().OnClear(enemyCatch);
         }
     }
     private void RestartUpdate()

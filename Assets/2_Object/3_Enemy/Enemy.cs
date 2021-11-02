@@ -21,7 +21,7 @@ public class Enemy : isCollision, ICollisionAble
     void Start()
     {
         follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
-        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+        //follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = timeSpeed;
         follow.SetDistance(distance);
@@ -76,12 +76,16 @@ public class Enemy : isCollision, ICollisionAble
     public void nowCollision(GameObject go)
     {
         //모델은 끄고 렉돌은 켜서 끌려가는 연출 on
-        GameManager.instance.EnemyCollision(gameObject);
-        follow.follow = false;
-        model.SetActive(false);
-        ragDoll.SetActive(true);
-        var joint = ragDoll.GetComponentInChildren<SpringJoint>();
-        joint.connectedBody = go.GetComponent<Rigidbody>();
-        isCatch = true; 
+        if (!isCatch)
+        {
+            isCatch = true;
+            follow.follow = false;
+            model.SetActive(false);
+            ragDoll.SetActive(true);
+            var joint = ragDoll.GetComponentInChildren<SpringJoint>();
+            joint.connectedBody = go.GetComponent<Rigidbody>();
+
+            GameManager.instance.EnemyCollision(gameObject);
+        }
     }
 }

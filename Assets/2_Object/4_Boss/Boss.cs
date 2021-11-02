@@ -33,12 +33,6 @@ public class Boss : MonoBehaviour
         shootingParticle = Instantiate(weapon.ShootParticle);
         shootingParticle.gameObject.SetActive(false);
         weaponPos.gameObject.SetActive(false);
-
-        var horse = GameObject.FindGameObjectWithTag("BossHorse").transform;
-        transform.position = horse.position;
-        transform.position += horse.transform.right * 2f - horse.transform.forward * 5f;
-
-        transform.LookAt(horse);
     }
     private void Update()
     {
@@ -66,7 +60,6 @@ public class Boss : MonoBehaviour
             case GameManager.GameState.ReStart:
                 if (GameManager.instance.PrevState == GameManager.GameState.Boss)
                 {
-
                     LookCowboy();
                 }
                 break;
@@ -103,6 +96,12 @@ public class Boss : MonoBehaviour
         switch (state)
         {
             case GameManager.GameState.Start:
+
+                var horse = GameManager.instance.bossHorse.transform;
+                transform.position = horse.position;
+                transform.position += /*horse.transform.right * 2f*/ -horse.transform.forward * 3f;
+
+                transform.LookAt(horse);
                 break;
             case GameManager.GameState.Play:
                 break;

@@ -14,6 +14,9 @@ public class InGameUI : MonoBehaviour
     public GameObject GameStart;
     public GameObject StageClear;
     public GameObject progressbar;
+    public GameObject Shop;
+    public GameObject ShopHorse;
+    public GameObject[] catchImage;
     private void Start()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
@@ -85,8 +88,26 @@ public class InGameUI : MonoBehaviour
     {
         GameOverUI.SetActive(true);
     }
-    public void OnClear()
+    public void OnClear(int enemyCatch)
     {
         StageClear.SetActive(true);
+        for (int i = 0; i < enemyCatch; i++)
+        {
+            catchImage[i].SetActive(true);
+        }
+    }
+    public void OnShop()
+    {
+        //상점에 들어가면
+        GameStart.SetActive(false);
+        Shop.SetActive(true);
+        ShopHorse.SetActive(true);
+    }
+    public void ExitShop()
+    {
+        //상점에서 나와라
+        Shop.SetActive(false);
+        GameStart.SetActive(true);
+        ShopHorse.SetActive(false);
     }
 }

@@ -26,13 +26,15 @@ public class BossHorse : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
-        follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+        //follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         follow.follow = false;
         follow.followSpeed = speed;
         follow.SetDistance(distance);
+
     }
     void Update()
     {
+        //Debug.Log(follow.GetPercent());
         transform.rotation = follow.transform.rotation;
         switch (GameManager.instance.state)
         {

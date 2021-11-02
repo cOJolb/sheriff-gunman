@@ -7,6 +7,9 @@ public class Item : isCollision, ICollisionAble
     public SetPos setPos;
     public ItemType itemType;
     public float distance;
+    public float rotateSpeed = 100f;
+
+    Dreamteck.Splines.SplinePositioner positioner;
     public void nowCollision(GameObject go)
     {
         switch (itemType.type)
@@ -28,10 +31,16 @@ public class Item : isCollision, ICollisionAble
 
     void Start()
     {
-        var positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
+        positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
         positioner.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         positioner.SetDistance(distance);
         PosSetting(setPos);
+
+        //아이템 띄우고 돌려주세요
+        positioner.motion.offset = new Vector2(positioner.motion.offset.x, 0.8f);
     }
-    
+    private void Update()
+    {
+        positioner.motion.rotationOffset = new Vector3(0, positioner.motion.rotationOffset.y + Time.deltaTime * rotateSpeed, 0f);
+    }
 }

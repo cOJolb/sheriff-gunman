@@ -139,7 +139,7 @@ public class Cowboy : MonoBehaviour
         if (GameManager.instance.tooEarly)
         {
             shootingParticle.transform.LookAt(boss.transform.position
-                + new Vector3(3f,0,0));
+                - boss.transform.right * 1.5f);
             GameManager.instance.boss.GetComponent<Boss>().BossShoot();
         }
         else
