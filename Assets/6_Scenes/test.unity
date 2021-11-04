@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 128110242}
   - component: {fileID: 128110241}
   - component: {fileID: 128110240}
+  - component: {fileID: 128110243}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -230,6 +231,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128110238}
   m_CullTransparentMesh: 1
+--- !u!114 &128110243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128110238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef230492a24e87d4389f4f7f53a2008d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interstitialButton: {fileID: 499182668}
+  rewardButton: {fileID: 1536475807}
+  reward: {fileID: 702286723}
 --- !u!1 &144597478
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,7 +349,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 144597482}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128110243}
+        m_TargetAssemblyTypeName: GoogleMobileAdTest, Assembly-CSharp
+        m_MethodName: OnClickRequestReward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &144597482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,7 +806,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 499182669}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128110243}
+        m_TargetAssemblyTypeName: GoogleMobileAdTest, Assembly-CSharp
+        m_MethodName: OnClickInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &499182669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,7 +1039,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 996999621}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128110243}
+        m_TargetAssemblyTypeName: GoogleMobileAdTest, Assembly-CSharp
+        m_MethodName: OnClickRequestInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &996999621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1320,7 +1372,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1348196660}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128110243}
+        m_TargetAssemblyTypeName: GoogleMobileAdTest, Assembly-CSharp
+        m_MethodName: OnClickInit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1348196660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1555,7 +1619,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1536475808}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128110243}
+        m_TargetAssemblyTypeName: GoogleMobileAdTest, Assembly-CSharp
+        m_MethodName: OnClickReward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1536475808
 MonoBehaviour:
   m_ObjectHideFlags: 0
