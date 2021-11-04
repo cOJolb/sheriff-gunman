@@ -7,6 +7,7 @@ public class Obstacle : isCollision, ICollisionAble
     public SetPos setPos;
     public float distance;
     public float downSpeed = 1f;
+
     public void nowCollision(GameObject go)
     {
         GameManager.instance.HumanCollision();
@@ -14,7 +15,6 @@ public class Obstacle : isCollision, ICollisionAble
         var horseScript = horse.GetComponent<Horse>();
         horseScript.SpeedUpValue -= downSpeed;
         gameObject.layer = LayerMask.NameToLayer("Dummy");
-        
         //Destroy(gameObject);
     }
     void Start()

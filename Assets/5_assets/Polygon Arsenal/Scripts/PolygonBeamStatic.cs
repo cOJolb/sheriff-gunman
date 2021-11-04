@@ -48,7 +48,7 @@ public class PolygonBeamStatic : MonoBehaviour
     void FixedUpdate()
     {
 
-           if (justOne >= 2)
+           if (justOne >= 5)
            {
                 justOne = 0;
                 gameObject.SetActive(false);
@@ -84,7 +84,6 @@ public class PolygonBeamStatic : MonoBehaviour
                line.material.mainTextureScale = new Vector2(distance / textureLengthScale, 1); //This sets the scale of the texture so it doesn't look stretched
                line.material.mainTextureOffset -= new Vector2(Time.deltaTime * textureScrollSpeed, 0); //This scrolls the texture along the beam if not set to 0
            }
-           
     }
 
     public void SpawnBeam() //This function spawns the prefab with linerenderer

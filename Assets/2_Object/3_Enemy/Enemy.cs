@@ -86,6 +86,7 @@ public class Enemy : isCollision, ICollisionAble
             joint.connectedBody = go.GetComponent<Rigidbody>();
 
             GameManager.instance.EnemyCollision(gameObject);
+            SoundManager.instance.CatchEnemySound();
         }
     }
 }

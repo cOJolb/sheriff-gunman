@@ -61,7 +61,18 @@ public class CableProceduralSimple : MonoBehaviour
 
 	void Update () 
 	{
+
+		// Get direction Vector.
+		vectorFromStartToEnd = endPointTransform.position - transform.position;
+		// Setting the Start object to look at the end will be used for making the wind be perpendicular to the cable later.
+		transform.forward = vectorFromStartToEnd.normalized;
+		// Get number of points in the cable using the distance from the start to end, and the point density
+		pointsInLineRenderer = Mathf.FloorToInt(pointDensity * vectorFromStartToEnd.magnitude);
+		// Set number of points in line renderer
+		line.positionCount = pointsInLineRenderer;
+
 		Draw();
+
 	}
 
 

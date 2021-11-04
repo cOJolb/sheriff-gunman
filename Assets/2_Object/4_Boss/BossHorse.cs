@@ -137,6 +137,7 @@ public class BossHorse : MonoBehaviour
         {
             GameManager.instance.GameOver();
             GameManager.instance.BossRun();
+            FinishDirecting();
         }
     }
     public void FinishDirecting()

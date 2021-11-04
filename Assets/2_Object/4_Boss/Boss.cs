@@ -161,6 +161,7 @@ GameManager.instance.cowboy.transform.forward * 6f;
     {
         gunPos.gameObject.SetActive(true);
         weaponPos.gameObject.SetActive(false);
+        SoundManager.instance.UsedGunSound();
     }
     public void shooting()
     {
@@ -171,8 +172,8 @@ GameManager.instance.cowboy.transform.forward * 6f;
         shootingParticle.gameObject.SetActive(true);
         shootingParticle.transform.position = muzzle.transform.position;
         shootingParticle.transform.LookAt(cowboy.GetComponent<Collider>().bounds.center);
-
-
+        SoundManager.instance.BossShootSound();
+        SoundManager.instance.PlayerDamageSound();
         cowboyScript.SetAnimation(Cowboy.PlayerAnimation.Death);
     }
     public void FinishDirecting()

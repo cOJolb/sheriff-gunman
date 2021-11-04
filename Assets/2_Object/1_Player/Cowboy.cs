@@ -124,6 +124,7 @@ public class Cowboy : MonoBehaviour
     {
         gunPos.gameObject.SetActive(true);
         weaponPos.gameObject.SetActive(false);
+        SoundManager.instance.UsedGunSound();
         //if (GameManager.instance.tooEarly)
         //{
         //    GameManager.instance.boss.GetComponent<Boss>().BossShoot();
@@ -135,7 +136,8 @@ public class Cowboy : MonoBehaviour
         var bossScript = boss.GetComponent<Boss>();
         shootingParticle.gameObject.SetActive(true);
         shootingParticle.transform.position = muzzle.transform.position;
-
+        SoundManager.instance.PlayerShootSound();
+        SoundManager.instance.PlayerDamageSound();
         if (GameManager.instance.tooEarly)
         {
             shootingParticle.transform.LookAt(boss.transform.position

@@ -22,15 +22,6 @@ public class GameManager : MonoBehaviour
             horse.GetComponent<Horse>().SetSkin(value);
         }
     }
-    //Cowboy cowboy;
-    //Horse horse;
-
-    //Boss boss;
-    //Enemy[] enemys;
-    //Item[] items;
-    //Obstacle[] obstacles;
-    //endSpace end;
-    //CameraMove mainCamera;
 
     public GameObject cowboy;
     public GameObject horse;
@@ -70,6 +61,9 @@ public class GameManager : MonoBehaviour
     bool finishDirecting;
 
     int enemyCatch;
+
+    bool SoundCheak;
+
     [HideInInspector]
     public int totalEnemyCatch;
     public bool finishAction
@@ -123,7 +117,7 @@ public class GameManager : MonoBehaviour
             totalTime = 0f;
             finishDirecting = false;
             Time.timeScale = 1f;
-
+            SoundCheak = false;
             gameState = value;
             InGameUI.StateInit(value);
             horse.GetComponent<Horse>().StateInit(value);
@@ -149,11 +143,14 @@ public class GameManager : MonoBehaviour
                         enemyProgress.Add(InGameUI.EnemyProgress(enemyScript.progress));
                     }
                     bossProgress = InGameUI.EnemyProgress(bossHorse.GetComponent<BossHorse>().progress);
+                    SoundManager.instance.GameStart();
+                    SoundManager.instance.BgmStart();
                     break;
                 case GameState.Play:
                     prevState = GameState.Play;
                     break;
                 case GameState.Trace:
+                    SoundManager.instance.BgmStop();
                     startTime = Time.realtimeSinceStartup;
                     prevState = GameState.Trace;
                     //bossTimingRange = 0.2f; //범위  0~1
@@ -225,8 +222,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(state);
-        Debug.Log(enemyCatch);
+        Debug.Log(state);
+        //Debug.Log(enemyCatch);
         switch (state)
         {
             case GameState.Start:
@@ -458,6 +455,11 @@ public class GameManager : MonoBehaviour
         if (finishDirecting)
         {
             InGameUI.GetComponent<InGameUI>().OnGameOver();
+            if(!SoundCheak)
+            {
+                SoundManager.instance.GameOverSound();
+                SoundCheak = true;
+            }
         }
     }
     private void FinishUpdate()
@@ -465,6 +467,11 @@ public class GameManager : MonoBehaviour
         if(finishDirecting)
         {
             InGameUI.GetComponent<InGameUI>().OnClear(enemyCatch);
+            if (!SoundCheak)
+            {
+                SoundManager.instance.GameClear();
+                SoundCheak = true;
+            }
         }
     }
     private void RestartUpdate()
@@ -532,28 +539,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    //public void HorseStateInit(Horse.HorseState value)//말의 상태에 따른 
-    //{
-    //    horseState = value;
-    //    switch (value)
-    //    {
-    //        case Horse.HorseState.Run:
-    //            break;
-    //        case Horse.HorseState.Sleep:
-    //            var cowboyScript = cowboy.GetComponent<Cowboy>();
-    //            cowboyScript.SetAnimation(Cowboy.PlayerAnimation.DisMount);
-    //            state = GameState.GameOver;
-    //            break;
-    //        case Horse.HorseState.Death:
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
-    //public void BossRun()//말이 움직이지 못하는 상태 ?
-    //{
-    //    horse.GetComponent<Horse>().hstate = Horse.HorseState.Sleep;
-    //}
+
     public void BossRun()
     {
 

@@ -180,6 +180,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8508923bdb873084183f1b749d217b95, type: 3}
+--- !u!114 &692110941 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8029682326295874725, guid: 8508923bdb873084183f1b749d217b95, type: 3}
+  m_PrefabInstance: {fileID: 692110940}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598e68924c9f6324bbfd049d3bae754c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &904674084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -235,9 +246,29 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3861547503260192761, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: _spline
+      value: 
+      objectReference: {fileID: 692110941}
     - target: {fileID: 4002431749523222987, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
       propertyPath: m_Name
       value: BaseSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 5171813536888261360, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: _spline
+      value: 
+      objectReference: {fileID: 692110941}
+    - target: {fileID: 5171813537575195924, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: _spline
+      value: 
+      objectReference: {fileID: 692110941}
+    - target: {fileID: 5171813537901380566, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: _spline
+      value: 
+      objectReference: {fileID: 692110941}
+    - target: {fileID: 5669317414045726681, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8806770948934527356, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -259,6 +290,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8888138391924891935, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
+      propertyPath: _spline
+      value: 
+      objectReference: {fileID: 692110941}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1d6035b3d8837c41a7ca37331be6e8c, type: 3}
 --- !u!1001 &1617815415

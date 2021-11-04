@@ -13,6 +13,7 @@ public class Horse : MonoBehaviour
     public MalbersAnimations.Controller.MAnimal animal;
     public GameObject SpeedUpParticle;
     public GameObject horseModel;
+    public GameObject SpeedUpText;
 
     public float distance;
     public float sensitive;
@@ -199,7 +200,8 @@ public class Horse : MonoBehaviour
                 //follow.followSpeed += itemValue;
                 if (!SpeedUpParticle.activeSelf)
                 {
-                    SpeedUpParticle.SetActive(true);
+                    SpeedUpText.SetActive(true);
+                    //SpeedUpParticle.SetActive(true);
                 }
                 speedUp += itemValue;
                 if(speedUp >= 4f)
@@ -221,7 +223,8 @@ public class Horse : MonoBehaviour
         if (totalspeedUpTime >= speedUpTime)
         {
             totalspeedUpTime = 0f;
-            SpeedUpParticle.SetActive(false);
+            SpeedUpText.SetActive(false);
+            //SpeedUpParticle.SetActive(false);
             playerGetItem &= (~ItemList.SpeedUp);
         }
     }

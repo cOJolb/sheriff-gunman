@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   ItemValue1: 1
-  ItemValue2: 3
+  ItemValue2: 1
   type: 1
