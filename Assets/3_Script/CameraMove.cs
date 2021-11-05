@@ -17,6 +17,9 @@ public class CameraMove : MonoBehaviour
     Transform cowboy;
     Vector3 targetPos;
     Quaternion runRotate;
+
+    Vector3 prevPos;
+    Quaternion prevRotate;
     void Start()
     {
         cowboy = GameObject.FindGameObjectWithTag("Player").transform;
@@ -96,6 +99,7 @@ public class CameraMove : MonoBehaviour
             case GameManager.GameState.Play:
                 break;
             case GameManager.GameState.Trace:
+                PrevSetting();
                 transform.LookAt(boss.position);
                 break;
             case GameManager.GameState.RunOver:
@@ -108,9 +112,19 @@ public class CameraMove : MonoBehaviour
             case GameManager.GameState.GameOver:
                 break;
             case GameManager.GameState.ReStart:
+                if(GameManager.instance.PrevState == GameManager.GameState.Trace)
+                {
+                    transform.position = prevPos;
+                    transform.rotation = transform.rotation;
+                }
                 break;
             default:
                 break;
         }
+    }
+    public void PrevSetting()
+    {
+        prevPos = transform.position;
+        prevRotate = transform.rotation;
     }
 }

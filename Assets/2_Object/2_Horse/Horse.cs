@@ -266,6 +266,9 @@ public class Horse : MonoBehaviour
                 // 애니메이션 걷기로 설정 (뛰면 눈이 아래로 향해서 너무 어지러움)
                 //animal.SetFloatParameter(animal.hash_Vertical, 2f);
                 //animal.SetFloatParameter(animal.hash_Horizontal, 0f);
+
+                // 보스와 일렬로 뛰어가세요
+                follow.motion.offset = new Vector2(0f, follow.motion.offset.y);
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;

@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
     public float bosstime;
     public float bossTraceBarSpeed;
     int life;
+    bool isTouch;
 
     [HideInInspector]
     public bool bossRun;
@@ -200,6 +201,7 @@ public class GameManager : MonoBehaviour
                     TimingOn = false;
                     tooEarly = false;
                     TraceOn = false;
+                    isTouch = false;
                     break;
                 default:
                     break;
@@ -330,6 +332,10 @@ public class GameManager : MonoBehaviour
     }
     private void TraceUpdate()
     {
+        if(finishDirecting)
+        {
+            state = GameState.RunOver;
+        }
         ProgressSetting();
         //현재 시간으로 맞춰주자! 
         totalTime = Time.realtimeSinceStartup - startTime;
@@ -348,6 +354,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            
             var timeSpeed = bossTraceBarSpeed;// 게이지 왔다갔다 속도 
             //왔다갔다 반복
             //if (totalTime >= timeSpeed) 
@@ -355,8 +362,7 @@ public class GameManager : MonoBehaviour
             //    totalTime = 0f;
             //}
             //한번만
-
-            if (totalTime >= timeSpeed)
+            if (totalTime >= timeSpeed && !isTouch)
             {
                 state = GameState.GameOver;
             }
@@ -373,6 +379,10 @@ public class GameManager : MonoBehaviour
             //Debug.Log(bossTiming);
             if (Input.touchCount == 1)
             {
+                isTouch = true;
+                InGameUI.ChangeColor(new Color(0f, 0f, 0f, 0f));
+                Time.timeScale = 1f;
+                InGameUI.GetComponent<InGameUI>().bossBattle.SetActive(false);
                 touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Began)
                 {
@@ -380,7 +390,8 @@ public class GameManager : MonoBehaviour
 
                     if (slider.value > bossTiming - bossTimingRange && slider.value < bossTiming + bossTimingRange)
                     {
-                        state = GameState.RunOver;
+                        cowboy.GetComponent<Cowboy>().SetAnimation(Cowboy.PlayerAnimation.MountShoot);
+                        //state = GameState.RunOver;
                     }
                     else
                     {

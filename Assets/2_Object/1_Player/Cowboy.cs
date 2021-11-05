@@ -69,7 +69,7 @@ public class Cowboy : MonoBehaviour
         ani.SetInteger("WeaponType", 0);
         ani.SetBool("WeaponHand", false);
 
-        SetAnimation(PlayerAnimation.DisMount);
+        FinishDirecting();
     }
     
     private void FixedUpdate()
@@ -103,8 +103,8 @@ public class Cowboy : MonoBehaviour
                 ani.SetTrigger("PlayerSad");
                 break;
             case PlayerAnimation.MountShoot:
-                ani.SetInteger("WeaponAction", 0);
-                ani.SetInteger("WeaponType", 0);
+                ani.SetInteger("WeaponAction", 101);
+                ani.SetInteger("WeaponType", 300);
                 ani.SetBool("WeaponHand", false);
                 break;
             case PlayerAnimation.DisMount:
