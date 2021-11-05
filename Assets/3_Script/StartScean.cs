@@ -26,7 +26,7 @@ public class StartScean : MonoBehaviour
     IEnumerator LoadScene(int sceanNumber)
     {
         // AsyncOperation을 통해 Scene Load 정도를 알 수 있다.
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetSceneByBuildIndex(nextindex).name);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetSceneByBuildIndex(sceanNumber).name);
         // Scene을 불러오는 것이 완료되면, AsyncOperation은 isDone 상태가 된다.
         while (!asyncLoad.isDone)
         {
