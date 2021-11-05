@@ -50,22 +50,30 @@ public class GameManager : MonoBehaviour
     float startTime;
     float Timing;
     bool TimingOn;
+    bool TraceOn;
     [HideInInspector]
     public bool tooEarly;
 
     float bossTiming;         
     public float bossTimingRange;
     public float bosstime;
-    int life;                 
-
-    bool finishDirecting;
-
-    int enemyCatch;
-
-    bool SoundCheak;
+    int life;
 
     [HideInInspector]
+    public bool bossRun;
+    [HideInInspector]
+    public int enemyCatch;
+    [HideInInspector]
     public int totalEnemyCatch;
+    [HideInInspector]
+    public int stageSave;
+    [HideInInspector]
+    public bool soundSave;
+
+    bool SoundCheak;
+    bool finishDirecting;
+    bool justOne;
+
     public bool finishAction
     {
         get
@@ -114,10 +122,12 @@ public class GameManager : MonoBehaviour
         }
         set
         {
+            InGameUI.ChangeColor(new Color(0f, 0f, 0f, 0f));
             totalTime = 0f;
             finishDirecting = false;
             Time.timeScale = 1f;
             SoundCheak = false;
+            justOne = false;
             gameState = value;
             InGameUI.StateInit(value);
             horse.GetComponent<Horse>().StateInit(value);
@@ -153,6 +163,10 @@ public class GameManager : MonoBehaviour
                     SoundManager.instance.BgmStop();
                     startTime = Time.realtimeSinceStartup;
                     prevState = GameState.Trace;
+
+                    //연출 붉은빛 정육점
+                    InGameUI.ChangeColor(new Color(0.6f, 0.1f, 0.1f, 0.5f));
+
                     //bossTimingRange = 0.2f; //범위  0~1
                     bossTiming = Random.Range(bossTimingRange, 1- bossTimingRange);
                     var bossTimingImage = InGameUI.bossBattle.GetComponentInChildren<test>();
@@ -161,10 +175,10 @@ public class GameManager : MonoBehaviour
 
                     bossTimingImage.Setting(bossTiming, sliderWidth, bossTimingRange);
 
-                    Time.timeScale = 0.5f;
+                    Time.timeScale = 0.2f;
                     break;
                 case GameState.RunOver:
-                    FadeInOut(5f);
+                    InGameUI.FadeInOut(5f);
                     break;
                 case GameState.Boss:
                     prevState = GameState.Boss;
@@ -182,7 +196,7 @@ public class GameManager : MonoBehaviour
                     //리스타트를 위한 보스전 초기화
                     TimingOn = false;
                     tooEarly = false;
-
+                    TraceOn = false;
                     break;
                 default:
                     break;
@@ -206,18 +220,17 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         startCount = 3;
-        //cowboy = GameObject.FindWithTag("Player");
-        //horse = GameObject.FindGameObjectWithTag("Horse");
-        //mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        //enemys = GameObject.FindGameObjectsWithTag("Enemy");
-        //items = GameObject.FindGameObjectsWithTag("Item");
-        //obstacles = GameObject.FindGameObjectsWithTag("Human");
-        //boss = GameObject.FindGameObjectWithTag("Boss");
-        //end = GameObject.FindGameObjectWithTag("end");
-        //bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
-        //road = GameObject.FindGameObjectWithTag("road");
-        //playerPos = end.transform.position;
         state = GameState.Idle;
+
+        //LoadGame
+        
+        var gameData = SaveSystem.LoadGame();
+        if (gameData != null)
+        {
+            HorseSkin = gameData.horseSkin;
+            totalEnemyCatch = gameData.totalEnemy;
+            bossRun = gameData.bossRun;
+        }
     }
 
     void Update()
@@ -281,13 +294,8 @@ public class GameManager : MonoBehaviour
     {
         //StartCoroutine(CoBossStart());
     }
-    private void FadeInOut(float duration)
-    {
-        var fadeinout = InGameUI.GetComponentInChildren<FadeInOut>();
-        var img = fadeinout.GetComponent<Image>();
 
-        StartCoroutine(fadeinout.CoFadeInOut(img.color, Color.black, duration));
-    }
+
     private void StartUpdate()
     {
         totalTime += Time.deltaTime;
@@ -321,84 +329,70 @@ public class GameManager : MonoBehaviour
     {
         ProgressSetting();
         //현재 시간으로 맞춰주자! 
-
         totalTime = Time.realtimeSinceStartup - startTime;
-
-
+        Debug.Log(TraceOn);
         //타이밍바
         //totalTime += Time.deltaTime;
-        
-        var timeSpeed = 2f;// 게이지 왔다갔다 속도 
-        //왔다갔다 반복
-        //if (totalTime >= timeSpeed) 
-        //{
-        //    totalTime = 0f;
-        //}
-        //한번만
-        if(totalTime >= timeSpeed/2f)
+        if (!TraceOn)
         {
-            state = GameState.GameOver;
-        }
-
-        var nowTiming = totalTime / (timeSpeed/2f);
-        if(nowTiming>= 1f)
-        {
-            nowTiming = 2f - nowTiming;
-        }
-        
-
-        var slider = InGameUI.bossBattle.GetComponentInChildren<Slider>();
-        slider.value = nowTiming;
-
-        //타이밍바 조작
-        #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
-        {
-           if (slider.value > bossTiming - bossTimingRange && slider.value < bossTiming + bossTimingRange)
-           {
-               state = GameState.RunOver;
-           }
-           else
-           {
-               if (life > 0)
-               {
-                   life--;
-               }
-               else
-               {
-                    state = GameState.GameOver;
-               }
-           }
-        }
-        #endif
-        #if UNITY_ANDROID
-
-        //Debug.Log(bossTiming);
-        if (Input.touchCount == 1)
-        {
-            touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            //게이지바 1초뒤에 시작
+            if(totalTime > 1f)
             {
-                Debug.Log($"{slider.value} , {bossTiming}");
+                startTime = Time.realtimeSinceStartup;
+                TraceOn = true;
+                InGameUI.bossBattle.SetActive(true);
+            }
+        }
+        else
+        {
+            var timeSpeed = 2f;// 게이지 왔다갔다 속도 
+            //왔다갔다 반복
+            //if (totalTime >= timeSpeed) 
+            //{
+            //    totalTime = 0f;
+            //}
+            //한번만
 
-                if (slider.value > bossTiming - bossTimingRange && slider.value < bossTiming + bossTimingRange)
+            if (totalTime >= timeSpeed / 2f)
+            {
+                state = GameState.GameOver;
+            }
+
+            var nowTiming = totalTime / (timeSpeed / 2f);
+            if (nowTiming >= 1f)
+            {
+                nowTiming = 2f - nowTiming;
+            }
+
+            var slider = InGameUI.bossBattle.GetComponentInChildren<Slider>();
+            slider.value = nowTiming;
+
+            //Debug.Log(bossTiming);
+            if (Input.touchCount == 1)
+            {
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    state = GameState.RunOver;
-                }
-                else
-                {
-                    if (life > 0)
+                    Debug.Log($"{slider.value} , {bossTiming}");
+
+                    if (slider.value > bossTiming - bossTimingRange && slider.value < bossTiming + bossTimingRange)
                     {
-                        life--;
+                        state = GameState.RunOver;
                     }
                     else
                     {
-                        state = GameState.GameOver;
+                        if (life > 0)
+                        {
+                            life--;
+                        }
+                        else
+                        {
+                            state = GameState.GameOver;
+                        }
                     }
                 }
             }
         }
-        #endif    
     }
     private void ProgressSetting()
     {
@@ -466,7 +460,17 @@ public class GameManager : MonoBehaviour
     {
         if(finishDirecting)
         {
-            InGameUI.GetComponent<InGameUI>().OnClear(enemyCatch);
+            if (!justOne)
+            {
+                InGameUI.GetComponent<InGameUI>().OnClear(enemyCatch);
+                cowboy.GetComponent<Cowboy>().ClearDirecting(enemyCatch);
+                
+                //세이브
+                totalEnemyCatch += enemyCatch;
+                SaveSystem.SaveGame(this);
+
+                justOne = true;
+            }
             if (!SoundCheak)
             {
                 SoundManager.instance.GameClear();
@@ -548,7 +552,7 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.Start;
     }
-    public void GameOver()
+    public void GameOver() // 게임 오버
     {
         state = GameState.GameOver;
     }

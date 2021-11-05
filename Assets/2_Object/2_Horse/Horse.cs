@@ -184,10 +184,13 @@ public class Horse : MonoBehaviour
     }
     private void OnCollisionEnter(Collision other)
     {
-        var collisionable = other.gameObject.GetComponentsInChildren<ICollisionAble>();
-        foreach (var collision in collisionable)
+        if (GameManager.instance.state == GameManager.GameState.Play)
         {
-            collision.nowCollision(gameObject);
+            var collisionable = other.gameObject.GetComponentsInChildren<ICollisionAble>();
+            foreach (var collision in collisionable)
+            {
+                collision.nowCollision(gameObject);
+            }
         }
     }
     public void GetItem(ItemList type, float itemValue, float itemValue2)
@@ -244,6 +247,7 @@ public class Horse : MonoBehaviour
                 follow.follow = true;
                 break;
             case GameManager.GameState.Trace:
+                gameObject.layer = LayerMask.NameToLayer("Dummy");
                 //이동하세요
                 animal.AlwaysForward = true;
                 follow.follow = true;
@@ -251,7 +255,8 @@ public class Horse : MonoBehaviour
                 //장애물에 부딪혀도 종료안되게
                 isSpeedZero = false;
                 //스피드업 이펙트 끄기
-                SpeedUpParticle.SetActive(false);
+                //SpeedUpParticle.SetActive(false);
+                SpeedUpText.SetActive(false);
 
                 // 보스의 이동속도랑 동일하게 추격
                 var bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
@@ -259,8 +264,8 @@ public class Horse : MonoBehaviour
                 follow.followSpeed = bossSpeed;
 
                 // 애니메이션 걷기로 설정 (뛰면 눈이 아래로 향해서 너무 어지러움)
-                animal.SetFloatParameter(animal.hash_Vertical, 2f);
-                animal.SetFloatParameter(animal.hash_Horizontal, 0f);
+                //animal.SetFloatParameter(animal.hash_Vertical, 2f);
+                //animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;

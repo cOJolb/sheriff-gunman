@@ -44,6 +44,13 @@ public class CameraMove : MonoBehaviour
                 transform.LookAt(HorseTarget);
                 runRotate = transform.rotation;
                 break;
+            case GameManager.GameState.Trace:
+                //transform.position = playerEye.transform.position;
+                //transform.position += transform.up * 0.2f;
+
+                //transform.LookAt(BossHorseTarget);
+                break;
+
             case GameManager.GameState.Boss:
                 Vector3 BossFightPos = BossFight.transform.position;
                 Vector3 BosstargetPos = new Vector3(BossFightPos.x, BossFightPos.y + 7, BossFightPos.z) + BossFight.transform.right * 5f - BossFight.transform.forward * 7f;
@@ -51,12 +58,7 @@ public class CameraMove : MonoBehaviour
 
                 transform.LookAt(BossFight.transform);
                 break;
-            case GameManager.GameState.Trace:
-                transform.position = playerEye.transform.position;
-                transform.position += transform.up * 0.2f;
 
-                transform.LookAt(BossHorseTarget);
-                break;
             case GameManager.GameState.GameOver:
                 switch (GameManager.instance.PrevState)
                 {

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InGameUI : MonoBehaviour
 {
     public GameObject bossBattle;
+    public GameObject fade;
     public Image enemyCheck;
     public GameObject enemyProgress;
     public GameObject bossTiming;
@@ -16,6 +17,7 @@ public class InGameUI : MonoBehaviour
     public GameObject progressbar;
     public GameObject Shop;
     public GameObject ShopHorse;
+    
     public GameObject[] catchImage;
     private void Start()
     {
@@ -53,7 +55,7 @@ public class InGameUI : MonoBehaviour
                 break;
             case GameManager.GameState.Trace:
                 speedUpBar.SetActive(false);
-                bossBattle.SetActive(true);
+                //bossBattle.SetActive(true);
                 break;
             case GameManager.GameState.Boss:
                 bossBattle.SetActive(false);
@@ -109,5 +111,17 @@ public class InGameUI : MonoBehaviour
         Shop.SetActive(false);
         GameStart.SetActive(true);
         ShopHorse.SetActive(false);
+    }
+    public void FadeInOut(float duration)
+    {
+        var fadeinout = fade.GetComponent<FadeInOut>();
+        var fadeImg = fade.GetComponent<Image>();
+
+        StartCoroutine(fadeinout.CoFadeInOut(fadeImg.color, Color.black, duration));
+    }
+    public void ChangeColor(Color color)
+    {
+        var img = fade.GetComponent<Image>();
+        img.color = color;
     }
 }

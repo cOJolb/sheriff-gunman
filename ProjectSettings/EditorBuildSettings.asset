@@ -5,64 +5,67 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
+    path: Assets/6_Scenes/StartScean.unity
+    guid: 4c192e12d4cadb946abb7c51f1cb3309
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 1.unity
     guid: b9c4e905cc9864d4f8d09bc93d720d91
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 2.unity
     guid: 2d03aeb999d2b4948b5792276d112a56
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 3.unity
     guid: 36e3f46d529f18947bb132fff14500fa
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 4.unity
     guid: ce13ad09d5cd4db43ace93d0f6b2e87d
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 5.unity
     guid: f3aab97439942714388fd3c97b1f848d
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 6.unity
     guid: e5833228e3267824db2fd1bf5087068d
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 7.unity
     guid: 7fb1c94a7215b50468026c7a8fc7898b
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 8.unity
     guid: 6288d733218f0134794146ac3366ac12
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 9.unity
     guid: 243a48f70c2d2614d85f929a51493b21
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 10.unity
     guid: 099d8169c86f27446a0e1925dbb9eb8b
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 11.unity
     guid: c0495a5488964134f8dd933985de76b8
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 12.unity
     guid: 8f0806ef4f9b58a4e996c8a3c727ec65
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 13.unity
     guid: 095c165ecf0c4e84691907a51863e291
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 14.unity
     guid: 87d8c0ea9d62de840a5da8388921a14e
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 15.unity
     guid: 6fd135bc3aab2b34895d95babc928d01
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 16.unity
     guid: d1bfc52468451674390b536def10f819
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 17.unity
     guid: 1c383bfa04908b9448b60580e41dd45c
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 18.unity
     guid: 3fc27b8c2bb351d4bb4f8dcda6f052ab
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 19.unity
     guid: 90e07566ae5e7c64897e80b57718f243
-  - enabled: 0
+  - enabled: 1
     path: Assets/6_Scenes/stage/stage 20.unity
     guid: 5ab681d89e15c654194b579d048375b4
   - enabled: 1

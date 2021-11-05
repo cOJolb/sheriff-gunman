@@ -11,7 +11,8 @@ public class Cowboy : MonoBehaviour
     public Transform weaponPos;
     public Transform gunPos;
     public Weapon weapon;
-    
+    public GameObject ClearCamera;
+
     GameObject muzzle;
     public GameObject shootingParticle;
 
@@ -204,6 +205,7 @@ public class Cowboy : MonoBehaviour
                         break;
                 }
                 break;
+                
             default:
                 break;
         }
@@ -213,7 +215,12 @@ public class Cowboy : MonoBehaviour
         var horse = GameManager.instance.horse;
         horse.GetComponent<Horse>().disMount();
     }
-
+    public void ClearDirecting(int value)
+    {
+        ani.SetTrigger("Clear");
+        ani.SetInteger("ClearState", value);
+        ClearCamera.SetActive(true);
+    }
     public void FinishDirecting()
     {
         GameManager.instance.FinishDirecting();
