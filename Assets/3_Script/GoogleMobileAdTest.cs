@@ -138,11 +138,11 @@ public class GoogleMobileAdTest : MonoBehaviour
     }
     public static void ClosedAdGoods(object sender, EventArgs args)
     {
+        GameManager.instance.totalEnemyCatch += 1;
         RequestGoodsAd();
     }
     public static void FailedToRoadAdGoods(object sender, AdFailedToLoadEventArgs e)
     {
-        GameManager.instance.state = GameManager.GameState.ReStart;
     }
 
     //public static void HandleRewardedAdLoaded(object sender, EventArgs args)

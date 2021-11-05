@@ -20,7 +20,7 @@ public class Shop : MonoBehaviour
     {
         totalCatchEnemy.text = $" : {GameManager.instance.totalEnemyCatch}";
         //스킨을 입을 수 있느냐
-        equipButton.interactable = false;
+        
         needImage.SetActive(false);
         switch (skinNumber)
         {
@@ -58,15 +58,7 @@ public class Shop : MonoBehaviour
                 break;
         }
         shopCamera.transform.RotateAround(shopHorse.position, Vector3.up, Time.deltaTime * speed);
-        if(GameManager.instance.HorseSkin == skinNumber)
-        {
-            equipButton.interactable = false;
-            equipped.SetActive(true);
-        }
-        else
-        {
-            equipped.SetActive(false);
-        }
+
     }
     public void SettingHorseSkin(int value)
     {
@@ -74,14 +66,27 @@ public class Shop : MonoBehaviour
         if (GameManager.instance.totalEnemyCatch < value)
         {
             needImage.SetActive(true);
-            needEnemy.text = $"need : {value}";
+            needEnemy.text = $" : {value}";
         }
     }
     public void CanEquip(int value)
     {
-        if (GameManager.instance.totalEnemyCatch >= value)
+        if (GameManager.instance.HorseSkin == skinNumber)
         {
-            equipButton.interactable = true;
+            equipButton.interactable = false;
+            equipped.SetActive(true);
+        }
+        else
+        {
+            if (GameManager.instance.totalEnemyCatch >= value)
+            {
+                equipButton.interactable = true;
+            }
+            else
+            {
+                equipButton.interactable = false;
+            }
+            equipped.SetActive(false);
         }
     }
     public void OnEquip()
@@ -116,5 +121,6 @@ public class Shop : MonoBehaviour
     public void OnAdButton()
     {
         GoogleMobileAdTest.OnClickGoods();
+
     }
 }

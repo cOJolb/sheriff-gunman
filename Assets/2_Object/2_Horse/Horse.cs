@@ -277,7 +277,8 @@ public class Horse : MonoBehaviour
                 break;
             case GameManager.GameState.GameOver:
                 follow.follow = false;
-                //ani.SetInteger("State", 0);
+                animal.AlwaysForward = false;
+                
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 break;
             case GameManager.GameState.ReStart:
