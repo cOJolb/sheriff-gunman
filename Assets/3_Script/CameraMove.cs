@@ -116,6 +116,7 @@ public class CameraMove : MonoBehaviour
                 {
                     transform.position = prevPos;
                     transform.rotation = transform.rotation;
+                    GameManager.instance.FinishDirecting();
                 }
                 break;
             default:

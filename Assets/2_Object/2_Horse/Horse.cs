@@ -292,9 +292,11 @@ public class Horse : MonoBehaviour
                         StartCoroutine(CoMoveToTarget(1f,0.8f, SleepPos,true));
                         break;
                     case GameManager.GameState.Trace:
-                        FinishDirecting();
+                        //FinishDirecting();
                         break;
                     case GameManager.GameState.Boss:
+                        break;
+                    case GameManager.GameState.BossRun:
                         break;
                     default:
                         break;

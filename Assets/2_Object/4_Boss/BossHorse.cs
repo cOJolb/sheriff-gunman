@@ -19,7 +19,7 @@ public class BossHorse : MonoBehaviour
     public GameObject failParticle;
     public float distance;
     private double prevPercentage;
-
+    public GameObject[] doors;
 
     Dreamteck.Splines.SplineFollower follow;
     private void Start()
@@ -91,6 +91,10 @@ public class BossHorse : MonoBehaviour
                 break;
             case GameManager.GameState.finish:
                 break;
+            case GameManager.GameState.BossRun:
+                animal.AlwaysForward = true;
+                animal.SetFloatParameter(animal.hash_Vertical, 5f);
+                break;
             case GameManager.GameState.GameOver:
                 switch (GameManager.instance.PrevState)
                 {
@@ -121,8 +125,7 @@ public class BossHorse : MonoBehaviour
                     case GameManager.GameState.Trace:
                         follow.SetPercent(prevPercentage);
                         break;
-                    case GameManager.GameState.Boss:
-                        break;
+                    
                     default:
                         break;
                 }
@@ -133,11 +136,10 @@ public class BossHorse : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "end")
+        if(collision.gameObject.tag == "end" && GameManager.instance.state == GameManager.GameState.Play)
         {
-            GameManager.instance.GameOver();
-            GameManager.instance.BossRun();
-            FinishDirecting();
+            GameManager.instance.state = GameManager.GameState.BossRun;
+
         }
     }
     public void FinishDirecting()

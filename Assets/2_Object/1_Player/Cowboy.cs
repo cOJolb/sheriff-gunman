@@ -46,22 +46,6 @@ public class Cowboy : MonoBehaviour
 
         transform.LookAt(horse);
     }
-    private void Update()
-    {
-        //총쏘는 애니메이션 테스트
-        //if(Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    ani.SetInteger("WeaponAction", 101);
-        //    ani.SetInteger("WeaponType", 300);
-        //    ani.SetBool("WeaponHand", false);
-        //}
-        //if(Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    ani.SetInteger("WeaponAction", 0);
-        //    ani.SetInteger("WeaponType", 0);
-        //    ani.SetBool("WeaponHand", false);
-        //}
-    }
 
     public void StopShooting()
     {

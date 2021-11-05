@@ -8,7 +8,7 @@ public class endSpace : MonoBehaviour, ICollisionAble
     {
         var positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
         positioner.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
-        positioner.SetPercent(1f);
+        positioner.SetPercent(0.96f);
     }
     public void nowCollision(GameObject go)
     {

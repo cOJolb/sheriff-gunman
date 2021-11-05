@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
         Boss,
         finish,
         GameOver,
+        BossRun,
         ReStart
     }
     private GameState gameState;
@@ -182,6 +183,7 @@ public class GameManager : MonoBehaviour
                     Time.timeScale = 0.2f;
                     break;
                 case GameState.RunOver:
+                    prevState = GameState.BossRun;
                     InGameUI.FadeInOut(5f);
                     break;
                 case GameState.Boss:
@@ -258,6 +260,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Boss:
                 BossUpdate();
+                break;
+            case GameState.BossRun:
+                BossRunUpdate();
                 break;
             case GameState.GameOver:
                 GameOverUpdate();
@@ -458,6 +463,13 @@ public class GameManager : MonoBehaviour
             state = GameState.GameOver;
         }
     }
+    private void BossRunUpdate()
+    {
+        if(finishDirecting)
+        {
+            state = GameState.GameOver;
+        }
+    }
     private void GameOverUpdate()
     {
         if (finishDirecting)
@@ -515,6 +527,9 @@ public class GameManager : MonoBehaviour
                     state = prevState;
                 }
                 break;
+            case GameState.BossRun:
+
+                break;
             default:
                 break;
         }
@@ -560,10 +575,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BossRun()
-    {
-
-    }
     public void GameStart() // 게임 스타트
     {
         state = GameState.Start;
