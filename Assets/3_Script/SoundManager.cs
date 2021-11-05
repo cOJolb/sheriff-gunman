@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource BGM;
     public static SoundManager instance;
 
+    public Toggle soundOnOff;
     private void Start()
     {
         instance = this;
@@ -83,6 +85,10 @@ public class SoundManager : MonoBehaviour
     public void BgmStop()
     {
         BGM.Stop();
+    }
+    public void SoundButton(bool value)
+    {
+        soundOnOff.isOn = value;
     }
     public void SoundOnOff(bool value)
     {

@@ -1815,6 +1815,7 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 37672206359f9864995e38d513957b6d, type: 3}
   MainSound: {fileID: 322126711}
   BGM: {fileID: 300097933}
+  soundOnOff: {fileID: 2115629475}
 --- !u!1 &1404456194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,7 +1936,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1404456197}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 529364671}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: OnAdButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1428809396
 GameObject:
   m_ObjectHideFlags: 0
@@ -9417,7 +9430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5669317414754952585, guid: 9e98c2e4e80205c4ebf74408ee86e3c8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5669317414754952585, guid: 9e98c2e4e80205c4ebf74408ee86e3c8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -14664,9 +14677,17 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
+      propertyPath: sceanscri
+      value: 
+      objectReference: {fileID: 1115861238}
+    - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
       propertyPath: sensitive
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
+      propertyPath: soundscri
+      value: 
+      objectReference: {fileID: 1302011035}
     - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
       propertyPath: catchRange
       value: 6
@@ -14674,6 +14695,10 @@ PrefabInstance:
     - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
       propertyPath: bossTimingRange
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085938251856668185, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
+      propertyPath: bossTraceBarSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4085938251856668190, guid: b09d91386ab80ce48b8a2d54f99f7a95, type: 3}
       propertyPath: m_RootOrder

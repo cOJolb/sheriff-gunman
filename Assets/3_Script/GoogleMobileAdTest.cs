@@ -13,9 +13,11 @@ public class GoogleMobileAdTest : MonoBehaviour
     public static readonly string interstitial1Id = "ca-app-pub-1195551850458243/2630472191";
     public static readonly string reward1Id = "ca-app-pub-1195551850458243/9004308858";
 
-    private InterstitialAd interstitial;
-    private RewardedAd rewardedAd;
+    private static InterstitialAd interstitial;
+    private static RewardedAd retryAd;
+    private static RewardedAd goodsAd;
     public static GoogleMobileAdTest instance;
+    public static bool isClosed;
     private void Awake()
     {
         instance = this;
@@ -25,12 +27,9 @@ public class GoogleMobileAdTest : MonoBehaviour
         //interstitialButton.interactable = false;
         //rewardButton.interactable = false;
     }
-
-
-    public void OnClickInit()
+    public static void Init()
     {
         List<string> deviceIds = new List<string>();
-        
 
         deviceIds.Add("04C5EA7CAF59424C20D9A9B6EAE9241C");
         RequestConfiguration requestConfiguration = new RequestConfiguration
@@ -38,82 +37,131 @@ public class GoogleMobileAdTest : MonoBehaviour
             .SetTestDeviceIds(deviceIds)
             .build();
         MobileAds.SetRequestConfiguration(requestConfiguration);
-        MobileAds.Initialize(initStatus => { });
+        MobileAds.Initialize(initStatus => {
+            RequestInterstitial();
+            RequestRetryAd();
+            RequestGoodsAd();
+        });
     }
 
-    public void OnClickRequestInterstitial()
-    {
-        if (interstitial != null)
-        {
-            interstitial.Destroy();
-        }
-        interstitial = new InterstitialAd(interstitial1Id);
-        this.interstitial.OnAdLoaded += HandleOnAdLoaded;
-        this.interstitial.OnAdOpening += HandleOnAdOpened;
-
-        AdRequest request = new AdRequest.Builder().Build();
-        interstitial.LoadAd(request);
-    }
-
-    public void HandleOnAdLoaded(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleAdLoaded event received");
-        interstitialButton.interactable = true;
-    }
-
-    public void HandleOnAdOpened(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleAdOpened event received");
-        interstitialButton.interactable = false;
-    }
-
-    public void OnClickInterstitial()
+    public static void OnClickInterstitial()
     {
         if (interstitial.IsLoaded())
         {
             interstitial.Show();
         }
     }
-    public void OnClickRequestReward()
+    public static void OnClickRetry()
     {
-        if (rewardedAd != null)
+        if (retryAd.IsLoaded())
         {
-            rewardedAd.Destroy();
+            retryAd.Show();
         }
-        this.rewardedAd = new RewardedAd(reward1Id);
-        this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
-        this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
-
-        this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+    }
+    public static void OnClickGoods()
+    {
+        if (goodsAd.IsLoaded())
+        {
+            goodsAd.Show();
+        }
+    }
+    public static void RequestInterstitial()
+    {
+        if (interstitial != null)
+        {
+            interstitial.Destroy();
+        }
+        interstitial = new InterstitialAd(interstitial1Id);
+        interstitial.OnAdLoaded += HandleOnAdLoaded;
+        interstitial.OnAdOpening += HandleOnAdOpened;
+        interstitial.OnAdClosed += HandleOnAdClosed;
+        interstitial.OnAdFailedToLoad += OnAdFailedToLoad;
         AdRequest request = new AdRequest.Builder().Build();
-        this.rewardedAd.LoadAd(request);
+        interstitial.LoadAd(request);
+    }
+    public static void HandleOnAdLoaded(object sender, EventArgs args)
+    {
+        MonoBehaviour.print("HandleAdLoaded event received");
+        //interstitialButton.interactable = true;
     }
 
-    public void HandleRewardedAdLoaded(object sender, EventArgs args)
+    public static void HandleOnAdOpened(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardedAdLoaded event received");
-        rewardButton.interactable = true;
-        reward.text = "리워드 광고 출력";
+        MonoBehaviour.print("HandleAdOpened event received");
+        //interstitialButton.interactable = false;
     }
-
-    public void HandleRewardedAdOpening(object sender, EventArgs args)
+    public static void HandleOnAdClosed(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardedAdOpening event received");
-        rewardButton.interactable = false;
+        isClosed = true;
+        RequestInterstitial();
     }
+    public static void OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e) { }
 
-    public void OnClickReward()
+    public static void RequestRetryAd()
     {
-        if (this.rewardedAd.IsLoaded())
+        if (retryAd != null)
         {
-            this.rewardedAd.Show();
+            retryAd.Destroy();
         }
+        retryAd = new RewardedAd(reward1Id);
+        //retryAd.OnAdLoaded += HandleRewardedAdLoaded;
+        //retryAd.OnAdOpening += HandleRewardedAdOpening;
+        retryAd.OnAdClosed += ClosedAdRetry;
+        retryAd.OnAdFailedToLoad += FailedToRoadAdRetry;
+        retryAd.OnUserEarnedReward += HandleUserEarnedReward;
+        AdRequest request = new AdRequest.Builder().Build();
+        retryAd.LoadAd(request);
+    }
+    public static void ClosedAdRetry(object sender, EventArgs args)
+    {
+        GameManager.instance.state = GameManager.GameState.ReStart;
+        RequestRetryAd();
+    }
+    public static void FailedToRoadAdRetry(object sender, AdFailedToLoadEventArgs e) 
+    {
+        GameManager.instance.state = GameManager.GameState.ReStart;
+    }
+    public static void RequestGoodsAd()
+    {
+        if (goodsAd != null)
+        {
+            goodsAd.Destroy();
+        }
+        goodsAd = new RewardedAd(reward1Id);
+        //retryAd.OnAdLoaded += HandleRewardedAdLoaded;
+        //retryAd.OnAdOpening += HandleRewardedAdOpening;
+        goodsAd.OnAdClosed += ClosedAdGoods;
+        goodsAd.OnAdFailedToLoad += FailedToRoadAdGoods;
+        goodsAd.OnUserEarnedReward += HandleUserEarnedReward;
+        AdRequest request = new AdRequest.Builder().Build();
+        goodsAd.LoadAd(request);
+    }
+    public static void ClosedAdGoods(object sender, EventArgs args)
+    {
+        RequestGoodsAd();
+    }
+    public static void FailedToRoadAdGoods(object sender, AdFailedToLoadEventArgs e)
+    {
+        GameManager.instance.state = GameManager.GameState.ReStart;
     }
 
-    public void HandleUserEarnedReward(object sender, Reward args)
+    //public static void HandleRewardedAdLoaded(object sender, EventArgs args)
+    //{
+    //    MonoBehaviour.print("HandleRewardedAdLoaded event received");
+    //    //rewardButton.interactable = true;
+    //    //reward.text = "리워드 광고 출력";
+    //}
+
+    //public static void HandleRewardedAdOpening(object sender, EventArgs args)
+    //{
+    //    MonoBehaviour.print("HandleRewardedAdOpening event received");
+    //    //rewardButton.interactable = false;
+    //}
+
+    public static void HandleUserEarnedReward(object sender, Reward args)
     {
         string type = args.Type;
         double amount = args.Amount;
-        reward.text = "received for " + amount.ToString() + " " + type;
+        //reward.text = "received for " + amount.ToString() + " " + type;
     }
 }

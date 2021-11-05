@@ -7,6 +7,13 @@ public class SceanScript : MonoBehaviour
 {
     int sceneindex;
     int nextindex;
+    public int NextIndex
+    {
+        get
+        {
+            return nextindex;
+        }
+    }
     private void Start()
     {
         sceneindex = SceneManager.GetActiveScene().buildIndex;

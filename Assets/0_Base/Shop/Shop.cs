@@ -113,4 +113,8 @@ public class Shop : MonoBehaviour
         meshrender[0] = skin[value];
         shopHorseModel.GetComponent<SkinnedMeshRenderer>().materials = meshrender;
     }
+    public void OnAdButton()
+    {
+        GoogleMobileAdTest.OnClickGoods();
+    }
 }

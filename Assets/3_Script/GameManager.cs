@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     GameObject end;
     GameObject mainCamera;
     public GameObject road;
+    public SceanScript sceanscri;
+    public SoundManager soundscri;
 
     private List<GameObject> enemylist = new List<GameObject>();
     private List<Vector2> portratePos = new List<Vector2>();
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
     float bossTiming;         
     public float bossTimingRange;
     public float bosstime;
+    public float bossTraceBarSpeed;
     int life;
 
     [HideInInspector]
@@ -223,13 +226,13 @@ public class GameManager : MonoBehaviour
         state = GameState.Idle;
 
         //LoadGame
-        
         var gameData = SaveSystem.LoadGame();
         if (gameData != null)
         {
             HorseSkin = gameData.horseSkin;
             totalEnemyCatch = gameData.totalEnemy;
             bossRun = gameData.bossRun;
+            soundscri.SoundButton(gameData.soundSave);
         }
     }
 
@@ -345,7 +348,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            var timeSpeed = 2f;// 게이지 왔다갔다 속도 
+            var timeSpeed = bossTraceBarSpeed;// 게이지 왔다갔다 속도 
             //왔다갔다 반복
             //if (totalTime >= timeSpeed) 
             //{
@@ -353,12 +356,12 @@ public class GameManager : MonoBehaviour
             //}
             //한번만
 
-            if (totalTime >= timeSpeed / 2f)
+            if (totalTime >= timeSpeed)
             {
                 state = GameState.GameOver;
             }
 
-            var nowTiming = totalTime / (timeSpeed / 2f);
+            var nowTiming = totalTime / timeSpeed;
             if (nowTiming >= 1f)
             {
                 nowTiming = 2f - nowTiming;
@@ -467,6 +470,8 @@ public class GameManager : MonoBehaviour
                 
                 //세이브
                 totalEnemyCatch += enemyCatch;
+                stageSave = sceanscri.NextIndex;
+                soundSave = soundscri.soundOnOff.isOn;
                 SaveSystem.SaveGame(this);
 
                 justOne = true;
@@ -558,7 +563,9 @@ public class GameManager : MonoBehaviour
     }
     public void GameReStart() // 게임 리스타트(광고 클릭)
     {
-        state = GameState.ReStart;
+        GoogleMobileAdTest.OnClickRetry();
+        
+        //state = GameState.ReStart;
     }
     public void FinishDirecting() // 종료연출이 끝남
     {

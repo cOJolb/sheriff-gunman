@@ -7,15 +7,15 @@ public class StartScean : MonoBehaviour
 {
     void Start()
     {
-        GoogleMobileAdTest.instance.OnClickInit();
+        GoogleMobileAdTest.Init();
         var loadData = SaveSystem.LoadGame();
         if(loadData != null)
         {
-            StartCoroutine(LoadScene(loadData.stageSave));
+            SceneManager.LoadScene(loadData.stageSave);
         }
         else
         {
-            StartCoroutine(LoadScene(1));
+            SceneManager.LoadScene(1);
         }
     }
 
