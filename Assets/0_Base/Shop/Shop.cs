@@ -11,13 +11,23 @@ public class Shop : MonoBehaviour
     public GameObject shopHorseModel;
     public Material[] skin;
     public Button equipButton;
+    public Button adButton;
     public Text totalCatchEnemy;
     public GameObject equipped;
     public GameObject needImage;
+
     public Text needEnemy;
     int skinNumber;
+
+    float realTime;
+    
     void FixedUpdate()
     {
+        if(realTime + 15f < Time.realtimeSinceStartup)
+        {
+            adButton.interactable = true;
+        }
+
         totalCatchEnemy.text = $" : {GameManager.instance.totalEnemyCatch}";
         //스킨을 입을 수 있느냐
         
@@ -121,6 +131,7 @@ public class Shop : MonoBehaviour
     public void OnAdButton()
     {
         GoogleMobileAdTest.OnClickGoods();
-
+        adButton.interactable = false;
+        realTime = Time.realtimeSinceStartup;
     }
 }

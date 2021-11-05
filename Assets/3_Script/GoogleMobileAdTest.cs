@@ -131,7 +131,7 @@ public class GoogleMobileAdTest : MonoBehaviour
         //retryAd.OnAdLoaded += HandleRewardedAdLoaded;
         //retryAd.OnAdOpening += HandleRewardedAdOpening;
         goodsAd.OnAdClosed += ClosedAdGoods;
-        goodsAd.OnAdFailedToLoad += FailedToRoadAdGoods;
+        //goodsAd.OnAdFailedToLoad += FailedToRoadAdGoods;
         goodsAd.OnUserEarnedReward += HandleUserEarnedReward;
         AdRequest request = new AdRequest.Builder().Build();
         goodsAd.LoadAd(request);
@@ -141,9 +141,7 @@ public class GoogleMobileAdTest : MonoBehaviour
         GameManager.instance.totalEnemyCatch += 1;
         RequestGoodsAd();
     }
-    public static void FailedToRoadAdGoods(object sender, AdFailedToLoadEventArgs e)
-    {
-    }
+
 
     //public static void HandleRewardedAdLoaded(object sender, EventArgs args)
     //{
