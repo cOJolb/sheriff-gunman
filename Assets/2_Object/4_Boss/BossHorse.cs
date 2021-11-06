@@ -134,12 +134,23 @@ public class BossHorse : MonoBehaviour
                 break;
         }
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if(collision.gameObject.tag == "end" && GameManager.instance.state == GameManager.GameState.Play)
+        if(other.gameObject.tag == "end" && GameManager.instance.state == GameManager.GameState.Play)
         {
-            GameManager.instance.state = GameManager.GameState.BossRun;
-
+            var collisionable = other.gameObject.GetComponentsInChildren<ICollisionAble>();
+            foreach (var collision in collisionable)
+            {
+                collision.nowCollision(gameObject);
+            }
+        }
+        if(other.gameObject.tag == "end" && GameManager.instance.state == GameManager.GameState.BossRun)
+        {
+            var collisionable = other.gameObject.GetComponentsInChildren<ICollisionAble>();
+            foreach (var collision in collisionable)
+            {
+                collision.nowCollision(gameObject);
+            }
         }
     }
     public void FinishDirecting()

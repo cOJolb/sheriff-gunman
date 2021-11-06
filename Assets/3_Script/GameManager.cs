@@ -302,7 +302,7 @@ public class GameManager : MonoBehaviour
     }
     public void endCollision()
     {
-        //StartCoroutine(CoBossStart());
+        state = GameState.BossRun;
     }
 
 
