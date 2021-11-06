@@ -1063,6 +1063,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8372001812430778268}
+  - component: {fileID: 945036768596966826}
   - component: {fileID: 8460675711013670818}
   - component: {fileID: 8430318425997271254}
   - component: {fileID: 8479004910819959762}
@@ -1077,7 +1078,6 @@ GameObject:
   - component: {fileID: 8478431747515078906}
   - component: {fileID: 8478357015529383828}
   - component: {fileID: 8376141609072675475}
-  - component: {fileID: 945036768596966826}
   m_Layer: 20
   m_Name: BossHorse
   m_TagString: BossHorse
@@ -1108,6 +1108,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &945036768596966826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375008034969159930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0870075144ed147926a26d5f11dbf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animal: {fileID: 8479142396345493716}
+  speed: 5
+  progress: {fileID: 0}
+  damageParticle: {fileID: 0}
+  failParticle: {fileID: 0}
+  distance: 0
+  doors: []
 --- !u!95 &8460675711013670818
 Animator:
   serializedVersion: 3
@@ -4559,24 +4578,6 @@ MonoBehaviour:
   _unityOnBeginningReached:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &945036768596966826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8375008034969159930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c0870075144ed147926a26d5f11dbf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animal: {fileID: 8479142396345493716}
-  speed: 5
-  progress: {fileID: 0}
-  damageParticle: {fileID: 0}
-  failParticle: {fileID: 0}
-  distance: 0
 --- !u!1 &8375017862155024630
 GameObject:
   m_ObjectHideFlags: 0

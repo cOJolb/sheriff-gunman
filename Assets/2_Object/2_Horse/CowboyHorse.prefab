@@ -4011,6 +4011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1745933742201343955}
+  - component: {fileID: 162764497}
   - component: {fileID: 1837404386048192493}
   - component: {fileID: 1795563816086667417}
   - component: {fileID: 1855171046088115101}
@@ -4025,7 +4026,6 @@ GameObject:
   - component: {fileID: 1854619889627347125}
   - component: {fileID: 1854553956400400347}
   - component: {fileID: 1741651004882823900}
-  - component: {fileID: 162764497}
   m_Layer: 20
   m_Name: CowboyHorse
   m_TagString: Horse
@@ -4056,6 +4056,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &162764497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742786786271848629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8aa228bcd3a0440b63f042198d9f83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materials: []
+  mounts: []
+  animal: {fileID: 1855035698113661083}
+  SpeedUpParticle: {fileID: 6532625475946147081}
+  horseModel: {fileID: 0}
+  SpeedUpText: {fileID: 0}
+  distance: 0
+  sensitive: 0
+  speedDown: 0.5
+  speed: 10
 --- !u!95 &1837404386048192493
 Animator:
   serializedVersion: 3
@@ -7495,27 +7517,6 @@ MonoBehaviour:
   _unityOnBeginningReached:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &162764497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742786786271848629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee8aa228bcd3a0440b63f042198d9f83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpeedUpParticle: {fileID: 6532625475946147081}
-  distance: 0
-  sensitive: 0
-  materials: []
-  horseModel: {fileID: 0}
-  mounts: []
-  speedDown: 0.5
-  animal: {fileID: 1855035698113661083}
-  speed: 10
 --- !u!1 &1742789840069259051
 GameObject:
   m_ObjectHideFlags: 0

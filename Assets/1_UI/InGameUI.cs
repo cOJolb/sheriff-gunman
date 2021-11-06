@@ -17,6 +17,7 @@ public class InGameUI : MonoBehaviour
     public GameObject progressbar;
     public GameObject Shop;
     public GameObject ShopHorse;
+    public GameObject speedUpText;
     
     public GameObject[] catchImage;
     private void Start()

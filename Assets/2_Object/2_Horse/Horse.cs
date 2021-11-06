@@ -13,7 +13,6 @@ public class Horse : MonoBehaviour
     public MalbersAnimations.Controller.MAnimal animal;
     public GameObject SpeedUpParticle;
     public GameObject horseModel;
-    public GameObject SpeedUpText;
 
     public float distance;
     public float sensitive;
@@ -203,7 +202,8 @@ public class Horse : MonoBehaviour
                 //follow.followSpeed += itemValue;
                 if (!SpeedUpParticle.activeSelf)
                 {
-                    SpeedUpText.SetActive(true);
+                    GameManager.instance.OnOffSpeedUpText(true);
+                    //SpeedUpText.SetActive(true);
                     //SpeedUpParticle.SetActive(true);
                 }
                 speedUp += itemValue;
@@ -226,7 +226,8 @@ public class Horse : MonoBehaviour
         if (totalspeedUpTime >= speedUpTime)
         {
             totalspeedUpTime = 0f;
-            SpeedUpText.SetActive(false);
+            GameManager.instance.OnOffSpeedUpText(false);
+            //SpeedUpText.SetActive(false);
             //SpeedUpParticle.SetActive(false);
             playerGetItem &= (~ItemList.SpeedUp);
         }
@@ -254,9 +255,11 @@ public class Horse : MonoBehaviour
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 //장애물에 부딪혀도 종료안되게
                 isSpeedZero = false;
+
                 //스피드업 이펙트 끄기
                 //SpeedUpParticle.SetActive(false);
-                SpeedUpText.SetActive(false);
+                //SpeedUpText.SetActive(false);
+                GameManager.instance.OnOffSpeedUpText(false);
 
                 // 보스의 이동속도랑 동일하게 추격
                 var bossHorse = GameObject.FindGameObjectWithTag("BossHorse");

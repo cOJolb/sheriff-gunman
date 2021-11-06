@@ -278,6 +278,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     public int EnemyCollision(GameObject Enemy)
     {
         enemyCatch++;
@@ -305,7 +306,6 @@ public class GameManager : MonoBehaviour
         state = GameState.BossRun;
     }
 
-
     private void StartUpdate()
     {
         totalTime += Time.deltaTime;
@@ -320,6 +320,7 @@ public class GameManager : MonoBehaviour
             state = GameState.Play;
         }
     }
+
     private void PlayUpdate()
     {
         var horseScript = horse.GetComponent<Horse>();
@@ -335,6 +336,7 @@ public class GameManager : MonoBehaviour
             state = GameState.Trace;
         }
     }
+
     private void TraceUpdate()
     {
         if(finishDirecting)
@@ -575,6 +577,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnOffSpeedUpText(bool value)
+    {
+        InGameUI.GetComponent<InGameUI>().speedUpText.SetActive(value);
+    }
     public void GameStart() // 게임 스타트
     {
         state = GameState.Start;
@@ -594,4 +600,5 @@ public class GameManager : MonoBehaviour
         Debug.Log("finishdirecting");
         finishDirecting = true;
     }
+    
 }
