@@ -17,6 +17,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip onClear;
     public AudioClip usedGun;
     public AudioClip bgm;
+    public AudioClip gameOver1;
+    public AudioClip gameOver2;
+    public AudioClip trace;
+
 
     public AudioSource MainSound;
     public AudioSource BGM;
@@ -50,9 +54,18 @@ public class SoundManager : MonoBehaviour
         int index = Random.Range(0, 4);
         MainSound.PlayOneShot(enemyCatchSound[index]);
     }
-    public void GameOverSound()
+    public void VsBossSound()
     {
         MainSound.PlayOneShot(vsBossLose);
+    }
+    public void TraceSound()
+    {
+        MainSound.PlayOneShot(trace);
+    }
+    public void GameOverSound()
+    {
+        MainSound.PlayOneShot(gameOver1);
+        MainSound.PlayOneShot(gameOver2);
     }
     public void PlayerShootSound()
     {

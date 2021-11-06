@@ -20,12 +20,19 @@ public class CameraMove : MonoBehaviour
 
     Vector3 prevPos;
     Quaternion prevRotate;
+
+    int layerMask;
     void Start()
     {
         cowboy = GameObject.FindGameObjectWithTag("Player").transform;
         horse = GameObject.FindGameObjectWithTag("Horse").transform;
         boss = GameObject.FindGameObjectWithTag("Boss").transform;
         bosshorse = GameObject.FindGameObjectWithTag("BossHorse").transform;
+
+        layerMask = GetComponent<Camera>().cullingMask;
+        var deleteLayerMask = 1 << 13;
+        var exceptLayerMask = ~deleteLayerMask;
+        GetComponent<Camera>().cullingMask = exceptLayerMask;
 
         transform.position = boss.position;
         transform.position += boss.transform.up * 1.5f + boss.transform.forward * 1.5f;
@@ -37,6 +44,12 @@ public class CameraMove : MonoBehaviour
     {
         switch (GameManager.instance.state)
         {
+            case GameManager.GameState.Idle:
+                transform.position = boss.position;
+                transform.position += boss.transform.up * 1.2f + boss.transform.forward * 1.5f;
+
+                transform.rotation = boss.transform.rotation * Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                break;
             case GameManager.GameState.Start:
 
                 break;
@@ -102,6 +115,7 @@ public class CameraMove : MonoBehaviour
                 transform.rotation = cowboy.rotation * Quaternion.Euler(20f, 0f, 0f);
                 break;
             case GameManager.GameState.Play:
+                GetComponent<Camera>().cullingMask = layerMask;
                 break;
             case GameManager.GameState.Trace:
                 PrevSetting();

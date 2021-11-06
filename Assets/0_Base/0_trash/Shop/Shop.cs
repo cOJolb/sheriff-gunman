@@ -68,7 +68,6 @@ public class Shop : MonoBehaviour
                 break;
         }
         shopCamera.transform.RotateAround(shopHorse.position, Vector3.up, Time.deltaTime * speed);
-
     }
     public void SettingHorseSkin(int value)
     {

@@ -7,7 +7,7 @@ public class Obstacle : isCollision, ICollisionAble
     public SetPos setPos;
     public float distance;
     public float downSpeed = 1f;
-
+    Dreamteck.Splines.SplinePositioner positioner;
     public void nowCollision(GameObject go)
     {
         GameManager.instance.HumanCollision();
@@ -15,11 +15,12 @@ public class Obstacle : isCollision, ICollisionAble
         var horseScript = horse.GetComponent<Horse>();
         horseScript.SpeedUpValue -= downSpeed;
         gameObject.layer = LayerMask.NameToLayer("Dummy");
+        positioner.enabled = false;
         //Destroy(gameObject);
     }
     void Start()
     {
-        var positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
+        positioner = GetComponent<Dreamteck.Splines.SplinePositioner>();
         positioner.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
         positioner.SetDistance(distance);
         PosSetting(setPos);

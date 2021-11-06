@@ -19,7 +19,6 @@ public class BossHorse : MonoBehaviour
     public GameObject failParticle;
     public float distance;
     private double prevPercentage;
-    public GameObject[] doors;
 
     Dreamteck.Splines.SplineFollower follow;
     private void Start()
@@ -27,6 +26,7 @@ public class BossHorse : MonoBehaviour
         ani = GetComponent<Animator>();
         follow = GetComponentInParent<Dreamteck.Splines.SplineFollower>();
         //follow.spline = GameManager.instance.road.GetComponent<Dreamteck.Splines.SplineComputer>();
+
         follow.follow = false;
         follow.followSpeed = speed;
         follow.SetDistance(distance);
@@ -38,18 +38,24 @@ public class BossHorse : MonoBehaviour
         transform.rotation = follow.transform.rotation;
         switch (GameManager.instance.state)
         {
-            case GameManager.GameState.Start:
-                if(startDash)
+            case GameManager.GameState.Idle:
+                if (GetComponent<AudioSource>() != null)
                 {
-                    totalTime += Time.deltaTime;
-                    if (totalTime >= 0.7f)
-                    {
-                        animal.AlwaysForward = true;
-                        follow.follow = true;
-                        animal.SetFloatParameter(animal.hash_Vertical, 5f);
-                        animal.SetFloatParameter(animal.hash_Horizontal, 0f);
-                    }
+                    GetComponent<AudioSource>().enabled = false;
                 }
+                break;
+            case GameManager.GameState.Start:
+                //if(startDash)
+                //{
+                //    totalTime += Time.deltaTime;
+                //    if (totalTime >= 0.7f)
+                //    {
+                //        animal.AlwaysForward = true;
+                //        follow.follow = true;
+                //        animal.SetFloatParameter(animal.hash_Vertical, 5f);
+                //        animal.SetFloatParameter(animal.hash_Horizontal, 0f);
+                //    }
+                //}
                 break;
             case GameManager.GameState.Play:
                 follow.followSpeed = speed;
@@ -70,6 +76,9 @@ public class BossHorse : MonoBehaviour
     {
         switch (state)
         {
+            case GameManager.GameState.Idle:
+                //GetComponent<AudioSource>().enabled = false;
+                break;
             case GameManager.GameState.Start:
                 
                 break;

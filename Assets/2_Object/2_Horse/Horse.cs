@@ -113,6 +113,12 @@ public class Horse : MonoBehaviour
 
         switch (GameManager.instance.state)
         {
+            case GameManager.GameState.Idle:
+                if(GetComponent<AudioSource>() != null)
+                {
+                    GetComponent<AudioSource>().enabled = false;
+                }
+                break;
             case GameManager.GameState.Start:
                 break;
             case GameManager.GameState.Play:
@@ -240,6 +246,9 @@ public class Horse : MonoBehaviour
     {
         switch (state)
         {
+            case GameManager.GameState.Idle:
+                //GetComponent<AudioSource>().enabled = false;
+                break;
             case GameManager.GameState.Start:
                 break;
             case GameManager.GameState.Play:

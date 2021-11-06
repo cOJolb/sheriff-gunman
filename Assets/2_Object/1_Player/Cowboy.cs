@@ -14,7 +14,7 @@ public class Cowboy : MonoBehaviour
     public GameObject ClearCamera;
 
     GameObject muzzle;
-    public GameObject shootingParticle;
+    GameObject shootingParticle;
 
     Touch touch;
     bool isMount;

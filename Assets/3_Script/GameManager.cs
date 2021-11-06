@@ -166,8 +166,10 @@ public class GameManager : MonoBehaviour
                     break;
                 case GameState.Trace:
                     SoundManager.instance.BgmStop();
+                    SoundManager.instance.TraceSound();
                     startTime = Time.realtimeSinceStartup;
                     prevState = GameState.Trace;
+                    
 
                     //연출 붉은빛 정육점
                     InGameUI.ChangeColor(new Color(0.6f, 0.1f, 0.1f, 0.5f));
@@ -188,6 +190,7 @@ public class GameManager : MonoBehaviour
                     break;
                 case GameState.Boss:
                     prevState = GameState.Boss;
+                    SoundManager.instance.VsBossSound();
                     Timing = Random.Range(1f, 5f); // 타이밍 범위 지정
                     break;
                 case GameState.finish:
