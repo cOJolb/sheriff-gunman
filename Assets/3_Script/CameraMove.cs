@@ -61,7 +61,12 @@ public class CameraMove : MonoBehaviour
 
                 transform.LookAt(BossFight.transform);
                 break;
+            case GameManager.GameState.BossRun:
+                targetPos = new Vector3(boss.position.x, boss.position.y + height, boss.position.z) - boss.forward * distance;
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
+                transform.LookAt(boss);
 
+                break;
             case GameManager.GameState.GameOver:
                 switch (GameManager.instance.PrevState)
                 {
@@ -105,7 +110,11 @@ public class CameraMove : MonoBehaviour
             case GameManager.GameState.RunOver:
                 break;
             case GameManager.GameState.Boss:
-
+                break;
+            case GameManager.GameState.BossRun:
+                //transform.position = boss.position;
+                //transform.position += boss.transform.up * height  - boss.transform.forward * distance;
+                //transform.LookAt(boss.transform);
                 break;
             case GameManager.GameState.finish:
                 break;

@@ -284,19 +284,23 @@ public class Horse : MonoBehaviour
                 
                 animal.SetFloatParameter(animal.hash_Horizontal, 0f);
                 break;
+            case GameManager.GameState.BossRun:
+                animal.AlwaysForward = false;
+                follow.follow = false;
+                break;
             case GameManager.GameState.ReStart:
                 switch (GameManager.instance.PrevState)
                 {
                     case GameManager.GameState.Play:
                         animal.Mode_Stop();
                         StartCoroutine(CoMoveToTarget(1f,0.8f, SleepPos,true));
+                        animal.AlwaysForward = false;
+                        follow.follow = false;
                         break;
                     case GameManager.GameState.Trace:
                         //FinishDirecting();
                         break;
                     case GameManager.GameState.Boss:
-                        break;
-                    case GameManager.GameState.BossRun:
                         break;
                     default:
                         break;
