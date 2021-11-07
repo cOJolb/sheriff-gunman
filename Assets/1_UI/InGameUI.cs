@@ -18,6 +18,7 @@ public class InGameUI : MonoBehaviour
     public GameObject Shop;
     public GameObject ShopHorse;
     public GameObject speedUpText;
+    public GameObject tutorial;
     
     public GameObject[] catchImage;
     private void Start()
@@ -53,6 +54,11 @@ public class InGameUI : MonoBehaviour
             case GameManager.GameState.Play:
                 progressbar.SetActive(true);
                 speedUpBar.SetActive(true);
+                if (tutorial != null)
+                {
+                    tutorial.SetActive(true);
+                    Time.timeScale = 0f;
+                }
                 break;
             case GameManager.GameState.Trace:
                 speedUpBar.SetActive(false);

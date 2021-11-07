@@ -31,9 +31,9 @@ public class Horse : MonoBehaviour
 
     private Vector3 prevPos;
 
-    
+    double prevPercentage;
 
-    
+
     public bool SpeedZero
     {
         get 
@@ -224,6 +224,8 @@ public class Horse : MonoBehaviour
                 follow.follow = true;
                 break;
             case GameManager.GameState.Trace:
+                prevPercentage = follow.GetPercent();
+
                 gameObject.layer = LayerMask.NameToLayer("Dummy");
                 //이동하세요
                 animal.AlwaysForward = true;
@@ -277,6 +279,7 @@ public class Horse : MonoBehaviour
                         follow.follow = false;
                         break;
                     case GameManager.GameState.Trace:
+                        follow.SetPercent(prevPercentage);
                         //FinishDirecting();
                         break;
                     case GameManager.GameState.Boss:

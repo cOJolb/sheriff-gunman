@@ -202,10 +202,42 @@ PrefabInstance:
       propertyPath: _spline
       value: 
       objectReference: {fileID: 689953308}
+    - target: {fileID: 842624782846477141, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -48.200012
+      objectReference: {fileID: 0}
+    - target: {fileID: 842624782846477141, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.5999756
+      objectReference: {fileID: 0}
+    - target: {fileID: 1244661106097257294, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -188.40002
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860768761026582849, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: bosstime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860768761026582849, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: bossTraceBarSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006141562809482775, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -169.80005
+      objectReference: {fileID: 0}
     - target: {fileID: 5295959327442167693, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: _spline
       value: 
       objectReference: {fileID: 689953308}
+    - target: {fileID: 5425838589035067057, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -222.19995
+      objectReference: {fileID: 0}
+    - target: {fileID: 5860468094464875392, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: speed
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 6144093798918629536, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: m_Name
       value: StageSystem
@@ -254,6 +286,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6232973660106546713, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232973660106546719, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232973660120208135, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 66a8a6e30880caa48908020cf5388217, type: 2}
+    - target: {fileID: 7043480419007878935, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 216.79999
+      objectReference: {fileID: 0}
     - target: {fileID: 7291984983460160054, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: setPos
       value: 1
@@ -274,6 +322,14 @@ PrefabInstance:
       propertyPath: distance
       value: 110
       objectReference: {fileID: 0}
+    - target: {fileID: 8198609923730665048, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 51.799988
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198609923730665048, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.6000977
+      objectReference: {fileID: 0}
     - target: {fileID: 8494911733131072390, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: _spline
       value: 
@@ -286,6 +342,10 @@ PrefabInstance:
       propertyPath: _spline
       value: 
       objectReference: {fileID: 689953308}
+    - target: {fileID: 9120780248159796818, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: distance
+      value: 230
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
 --- !u!1001 &8021758765818168944

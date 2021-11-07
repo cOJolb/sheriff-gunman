@@ -85,10 +85,12 @@ public class BossHorse : MonoBehaviour
             case GameManager.GameState.Play:
                 animal.AlwaysForward = true;
                 follow.follow = true;
+                //prevPercentage = follow.GetPercent();
                 break;
             case GameManager.GameState.Trace:
                 //animal.AlwaysForward = false;
                 //follow.follow = false;
+                prevPercentage = follow.GetPercent();
                 break;
             case GameManager.GameState.RunOver:
                 animal.AlwaysForward = false;
@@ -111,8 +113,9 @@ public class BossHorse : MonoBehaviour
                         prevPercentage = follow.GetPercent();
                         break;
                     case GameManager.GameState.Trace:
-                        prevPercentage = follow.GetPercent();
-                        FinishDirecting();
+                        //prevPercentage = follow.GetPercent();
+
+                        FinishDirecting();//??이건 여기 왜 있냥
                         break;
                     case GameManager.GameState.Boss:
                         animal.AlwaysForward = false;
