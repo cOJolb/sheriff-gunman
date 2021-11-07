@@ -254,6 +254,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7291984983460160054, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: distance
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291984984151293394, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: distance
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291984984477477648, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: distance
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 8494911733131072390, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: _spline
       value: 

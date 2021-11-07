@@ -186,13 +186,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6245746465793314326, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.1428576
+      objectReference: {fileID: 0}
+    - target: {fileID: 6245746466211680754, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -32.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6245746466940258096, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.285712
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291984983460160054, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: distance
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7291984984151293394, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: distance
-      value: 80
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7291984984477477648, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: distance
-      value: 60
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8494911733131072390, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: _spline
@@ -207,8 +223,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1218079999}
     - target: {fileID: 9120780248159796818, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
+      propertyPath: speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9120780248159796818, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: distance
-      value: 30
+      value: 42
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84058bc225a600947a845bbf5541f64d, type: 3}

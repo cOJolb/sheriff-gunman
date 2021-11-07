@@ -292,11 +292,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7291984984151293394, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: distance
-      value: 300
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7291984984477477648, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: distance
-      value: 220
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 8494911733131072390, guid: 84058bc225a600947a845bbf5541f64d, type: 3}
       propertyPath: _spline
