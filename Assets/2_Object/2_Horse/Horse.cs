@@ -60,39 +60,6 @@ public class Horse : MonoBehaviour
             return playerGetItem;
         }
     }
-    //public enum HorseState
-    //{
-    //    Idle,
-    //    Run,
-    //    Sleep,
-    //    Death
-    //}
-    //private HorseState horseState;
-    //public HorseState hstate
-    //{
-    //    get
-    //    {
-    //        return horseState;
-    //    }
-    //    set
-    //    {
-    //        horseState = value;
-    //        GameManager.instance.HorseStateInit(value);
-    //        switch (value)
-    //        {
-    //            case HorseState.Run:
-    //                break;
-    //            case HorseState.Sleep:
-    //                follow.follow = false;
-    //                ani.SetInteger("State", 0);
-    //                break;
-    //            case HorseState.Death:
-    //                break;
-    //            default:
-    //                break;
-    //        }
-    //    }
-    //}
     Touch touch;
     Dreamteck.Splines.SplineFollower follow;
     private void Start()

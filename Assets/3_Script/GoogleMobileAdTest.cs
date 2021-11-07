@@ -17,7 +17,8 @@ public class GoogleMobileAdTest : MonoBehaviour
     private static RewardedAd retryAd;
     private static RewardedAd goodsAd;
     public static GoogleMobileAdTest instance;
-    public static bool isClosed;
+    public static bool isClosed = false;
+    public static bool isFailed;
     private void Awake()
     {
         instance = this;
@@ -31,7 +32,7 @@ public class GoogleMobileAdTest : MonoBehaviour
     {
         List<string> deviceIds = new List<string>();
 
-        deviceIds.Add("04C5EA7CAF59424C20D9A9B6EAE9241C");
+        //deviceIds.Add("04C5EA7CAF59424C20D9A9B6EAE9241C");
         RequestConfiguration requestConfiguration = new RequestConfiguration
             .Builder()
             .SetTestDeviceIds(deviceIds)
@@ -72,24 +73,22 @@ public class GoogleMobileAdTest : MonoBehaviour
             interstitial.Destroy();
         }
         interstitial = new InterstitialAd(interstitial1Id);
-        //interstitial.OnAdLoaded += HandleOnAdLoaded;
+        interstitial.OnAdLoaded += OnAdLoaded;
         //interstitial.OnAdOpening += HandleOnAdOpened;
         interstitial.OnAdClosed += HandleOnAdClosed;
         interstitial.OnAdFailedToLoad += OnAdFailedToLoad;
         AdRequest request = new AdRequest.Builder().Build();
         interstitial.LoadAd(request);
     }
-    //public static void HandleOnAdLoaded(object sender, EventArgs args)
-    //{
-    //    MonoBehaviour.print("HandleAdLoaded event received");
-    //    //interstitialButton.interactable = true;
-    //}
+    public static void HandleOnAdOpened(object sender, EventArgs args)
+    {
+        isFailed = false;
 
-    //public static void HandleOnAdOpened(object sender, EventArgs args)
-    //{
-    //    MonoBehaviour.print("HandleAdOpened event received");
-    //    //interstitialButton.interactable = false;
-    //}
+    }
+    public static void OnAdLoaded(object sender, EventArgs args)
+    {
+        isFailed = false;
+    }
     public static void HandleOnAdClosed(object sender, EventArgs args)
     {
         isClosed = true;
@@ -97,8 +96,7 @@ public class GoogleMobileAdTest : MonoBehaviour
     }
     public static void OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e) 
     {
-        isClosed = true;
-        RequestInterstitial();
+        isFailed = true;
     }
 
     public static void RequestRetryAd()
@@ -108,10 +106,10 @@ public class GoogleMobileAdTest : MonoBehaviour
             retryAd.Destroy();
         }
         retryAd = new RewardedAd(reward1Id);
-        //retryAd.OnAdLoaded += HandleRewardedAdLoaded;
+        retryAd.OnAdLoaded += HandleRewardedAdLoaded;
         //retryAd.OnAdOpening += HandleRewardedAdOpening;
         retryAd.OnAdClosed += ClosedAdRetry;
-        retryAd.OnAdFailedToLoad += FailedToRoadAdRetry;
+        retryAd.OnAdFailedToLoad += FailedToRoadRewardAd;
         retryAd.OnUserEarnedReward += HandleUserEarnedReward;
         AdRequest request = new AdRequest.Builder().Build();
         retryAd.LoadAd(request);
@@ -121,10 +119,7 @@ public class GoogleMobileAdTest : MonoBehaviour
         GameManager.instance.state = GameManager.GameState.ReStart;
         RequestRetryAd();
     }
-    public static void FailedToRoadAdRetry(object sender, AdFailedToLoadEventArgs e) 
-    {
-        GameManager.instance.state = GameManager.GameState.ReStart;
-    }
+
     public static void RequestGoodsAd()
     {
         if (goodsAd != null)
@@ -132,10 +127,10 @@ public class GoogleMobileAdTest : MonoBehaviour
             goodsAd.Destroy();
         }
         goodsAd = new RewardedAd(reward1Id);
-        //retryAd.OnAdLoaded += HandleRewardedAdLoaded;
-        //retryAd.OnAdOpening += HandleRewardedAdOpening;
+        goodsAd.OnAdLoaded += HandleRewardedAdLoaded;
+        //goodsAd.OnAdOpening += HandleRewardedAdOpening;
         goodsAd.OnAdClosed += ClosedAdGoods;
-        //goodsAd.OnAdFailedToLoad += FailedToRoadAdGoods;
+        goodsAd.OnAdFailedToLoad += FailedToRoadRewardAd;
         goodsAd.OnUserEarnedReward += HandleUserEarnedReward;
         AdRequest request = new AdRequest.Builder().Build();
         goodsAd.LoadAd(request);
@@ -145,20 +140,22 @@ public class GoogleMobileAdTest : MonoBehaviour
         GameManager.instance.totalEnemyCatch += 1;
         RequestGoodsAd();
     }
+    public static void HandleRewardedAdLoaded(object sender, EventArgs args)
+    {
+        isFailed = false;
+    }
+    public static void FailedToRoadRewardAd(object sender, AdFailedToLoadEventArgs e)
+    {
+        isFailed = true;
+        //GameManager.instance.state = GameManager.GameState.ReStart;
+    }
 
-
-    //public static void HandleRewardedAdLoaded(object sender, EventArgs args)
-    //{
-    //    MonoBehaviour.print("HandleRewardedAdLoaded event received");
-    //    //rewardButton.interactable = true;
-    //    //reward.text = "리워드 광고 출력";
-    //}
-
-    //public static void HandleRewardedAdOpening(object sender, EventArgs args)
-    //{
-    //    MonoBehaviour.print("HandleRewardedAdOpening event received");
-    //    //rewardButton.interactable = false;
-    //}
+    public static void HandleRewardedAdOpening(object sender, EventArgs args)
+    {
+        //MonoBehaviour.print("HandleRewardedAdOpening event received");
+        ////rewardButton.interactable = false;
+        isFailed = false;
+    }
 
     public static void HandleUserEarnedReward(object sender, Reward args)
     {

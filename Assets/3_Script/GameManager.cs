@@ -172,7 +172,8 @@ public class GameManager : MonoBehaviour
                     
 
                     //¿¬Ãâ ºÓÀººû Á¤À°Á¡
-                    InGameUI.ChangeColor(new Color(0.6f, 0.1f, 0.1f, 0.5f));
+                    //InGameUI.ChangeColor(new Color(0.6f, 0.1f, 0.1f, 0.5f));
+                    InGameUI.ChangeColor(new Color32(112, 66,20,122));
 
                     //bossTimingRange = 0.2f; //¹üÀ§  0~1
                     bossTiming = Random.Range(bossTimingRange, 1- bossTimingRange);
@@ -239,8 +240,12 @@ public class GameManager : MonoBehaviour
         {
             HorseSkin = gameData.horseSkin;
             totalEnemyCatch = gameData.totalEnemy;
-            bossRun = gameData.bossRun;
+            
             soundscri.SoundButton(gameData.soundSave);
+        }
+        else if(gameData.bossRun)
+        {
+            horse.GetComponent<Horse>().SpeedUpValue += 1f;
         }
     }
 
@@ -277,7 +282,6 @@ public class GameManager : MonoBehaviour
             case GameState.ReStart:
                 RestartUpdate();
                 break;
-
             default:
                 break;
         }
@@ -534,7 +538,8 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.BossRun:
-
+                bossRun = true;
+                SaveSystem.SaveGame(this);
                 break;
             default:
                 break;

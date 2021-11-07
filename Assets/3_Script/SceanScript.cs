@@ -30,6 +30,13 @@ public class SceanScript : MonoBehaviour
     }
     public static void CurScene()
     {
+        if (GoogleMobileAdTest.isFailed)
+        {
+            GoogleMobileAdTest.RequestInterstitial();
+            SceneManager.LoadScene(sceneindex);
+            return;
+        }
+
         var random = Random.value;
         if (random > 0.3f)
         {
@@ -43,6 +50,13 @@ public class SceanScript : MonoBehaviour
     }
     public void NextScene()
     {
+        if(GoogleMobileAdTest.isFailed)
+        {
+            GoogleMobileAdTest.RequestInterstitial();
+            SceneManager.LoadScene(nextindex);
+            return;
+        }
+
         var random = Random.value;
         if (random > 0.3f)
         {

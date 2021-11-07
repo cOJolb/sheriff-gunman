@@ -5,9 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class StartScean : MonoBehaviour
 {
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
-        GoogleMobileAdTest.Init();
+        if(GoogleMobileAdTest.isFailed == false)
+        {
+            GoogleMobileAdTest.Init();
+        }
         var loadData = SaveSystem.LoadGame();
         if(loadData != null)
         {

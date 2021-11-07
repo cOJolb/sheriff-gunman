@@ -1,5 +1,5 @@
 {
-    "m_SelectedDeviceId": "emulator-5554",
+    "m_SelectedDeviceId": "LGMG600LRad81fa27",
     "m_SelectedPackage": {
         "deviceId": "",
         "name": "",
@@ -12,6 +12,30 @@
             "deviceId": "emulator-5554",
             "name": "com.bluestacks.launcher",
             "processId": 2196,
+            "exited": false
+        },
+        {
+            "deviceId": "LGMG600LRad81fa27",
+            "name": "com.lge.launcher3",
+            "processId": 6355,
+            "exited": false
+        },
+        {
+            "deviceId": "LGMG600LRad81fa27",
+            "name": "com.android.chrome",
+            "processId": 13863,
+            "exited": true
+        },
+        {
+            "deviceId": "LGMG600LRad81fa27",
+            "name": "com.android.settings",
+            "processId": 16915,
+            "exited": false
+        },
+        {
+            "deviceId": "LGMG600LRad81fa27",
+            "name": "com.kakao.talk",
+            "processId": 15251,
             "exited": false
         }
     ],
@@ -65,7 +89,7 @@
         "MemoryGroup": 2,
         "Behavior": 0
     },
-    "m_Filter": "Device",
+    "m_Filter": "",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }
