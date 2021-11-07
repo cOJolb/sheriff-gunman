@@ -20,7 +20,11 @@ public class Shop : MonoBehaviour
     int skinNumber;
 
     float realTime;
-    
+
+    private void Start()
+    {
+        
+    }
     void FixedUpdate()
     {
         if(realTime + 15f < Time.realtimeSinceStartup)

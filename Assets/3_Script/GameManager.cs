@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
                 case GameState.Boss:
                     prevState = GameState.Boss;
                     SoundManager.instance.VsBossSound();
-                    Timing = Random.Range(1f, 5f); // 타이밍 범위 지정
+                    Timing = Random.Range(2.5f, 7f); // 타이밍 범위 지정
                     break;
                 case GameState.finish:
                     break;
@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
                     }
                     break;
                 case GameState.ReStart:
+                    SoundManager.instance.StopSound();
                     //리스타트를 위한 보스전 초기화
                     TimingOn = false;
                     tooEarly = false;

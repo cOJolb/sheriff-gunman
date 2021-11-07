@@ -72,30 +72,34 @@ public class GoogleMobileAdTest : MonoBehaviour
             interstitial.Destroy();
         }
         interstitial = new InterstitialAd(interstitial1Id);
-        interstitial.OnAdLoaded += HandleOnAdLoaded;
-        interstitial.OnAdOpening += HandleOnAdOpened;
+        //interstitial.OnAdLoaded += HandleOnAdLoaded;
+        //interstitial.OnAdOpening += HandleOnAdOpened;
         interstitial.OnAdClosed += HandleOnAdClosed;
         interstitial.OnAdFailedToLoad += OnAdFailedToLoad;
         AdRequest request = new AdRequest.Builder().Build();
         interstitial.LoadAd(request);
     }
-    public static void HandleOnAdLoaded(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleAdLoaded event received");
-        //interstitialButton.interactable = true;
-    }
+    //public static void HandleOnAdLoaded(object sender, EventArgs args)
+    //{
+    //    MonoBehaviour.print("HandleAdLoaded event received");
+    //    //interstitialButton.interactable = true;
+    //}
 
-    public static void HandleOnAdOpened(object sender, EventArgs args)
-    {
-        MonoBehaviour.print("HandleAdOpened event received");
-        //interstitialButton.interactable = false;
-    }
+    //public static void HandleOnAdOpened(object sender, EventArgs args)
+    //{
+    //    MonoBehaviour.print("HandleAdOpened event received");
+    //    //interstitialButton.interactable = false;
+    //}
     public static void HandleOnAdClosed(object sender, EventArgs args)
     {
         isClosed = true;
         RequestInterstitial();
     }
-    public static void OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e) { }
+    public static void OnAdFailedToLoad(object sender, AdFailedToLoadEventArgs e) 
+    {
+        isClosed = true;
+        RequestInterstitial();
+    }
 
     public static void RequestRetryAd()
     {

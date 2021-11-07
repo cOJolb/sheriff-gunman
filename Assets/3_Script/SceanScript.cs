@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceanScript : MonoBehaviour
 {
-    int sceneindex;
-    int nextindex;
+    static int sceneindex;
+    static int nextindex;
+    static int index;
     public int NextIndex
     {
         get
@@ -19,11 +20,41 @@ public class SceanScript : MonoBehaviour
         sceneindex = SceneManager.GetActiveScene().buildIndex;
         nextindex = sceneindex+1;
     }
-
+    private void Update()
+    {
+        if(GoogleMobileAdTest.isClosed)
+        {
+            GoogleMobileAdTest.isClosed = false;
+            SceneManager.LoadScene(index);
+        }
+    }
+    public static void CurScene()
+    {
+        var random = Random.value;
+        if (random > 0.3f)
+        {
+            GoogleMobileAdTest.OnClickInterstitial();
+            index = sceneindex;
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneindex);
+        }
+    }
     public void NextScene()
     {
-        SceneManager.LoadScene(nextindex);
+        var random = Random.value;
+        if (random > 0.3f)
+        {
+            GoogleMobileAdTest.OnClickInterstitial();
+            index = nextindex;
+        }
+        else
+        {
+            SceneManager.LoadScene(nextindex);
+        }
     }
+    
     IEnumerator LoadScene()
     {
         // AsyncOperation을 통해 Scene Load 정도를 알 수 있다.

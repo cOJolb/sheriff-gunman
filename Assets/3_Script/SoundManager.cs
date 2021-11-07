@@ -21,7 +21,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip gameOver2;
     public AudioClip trace;
 
-
     public AudioSource MainSound;
     public AudioSource BGM;
     public static SoundManager instance;
@@ -30,6 +29,11 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+    }
+    public void StopSound()
+    {
+        MainSound.Stop();
+        BGM.Stop();
     }
     public void OnButtonSound()
     {

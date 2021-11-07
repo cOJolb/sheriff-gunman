@@ -91,6 +91,11 @@ public class InGameUI : MonoBehaviour
     {
         GameOverUI.SetActive(true);
     }
+
+    public void OnReStart()
+    {
+        SceanScript.CurScene();
+    }
     public void OnClear(int enemyCatch)
     {
         StageClear.SetActive(true);

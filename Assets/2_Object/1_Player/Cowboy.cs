@@ -52,7 +52,7 @@ public class Cowboy : MonoBehaviour
         ani.SetInteger("WeaponAction", 0);
         ani.SetInteger("WeaponType", 0);
         ani.SetBool("WeaponHand", false);
-
+        SoundManager.instance.PlayerShootSound();
         FinishDirecting();
     }
     
