@@ -10,6 +10,7 @@ public class GameData
     public int horseSkin;
     public bool bossRun;
     public bool soundSave;
+    public bool allClear;
     public GameData (GameManager game)
     {
         totalEnemy = game.totalEnemyCatch;
@@ -17,5 +18,6 @@ public class GameData
         bossRun = game.bossRun;
         stageSave = game.stageSave;
         soundSave = game.soundSave;
+        allClear = game.allClear;
     }
 }

@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
     public int stageSave;
     [HideInInspector]
     public bool soundSave;
+    [HideInInspector]
+    public bool allClear;
 
     bool SoundCheak;
     bool finishDirecting;
@@ -228,25 +230,42 @@ public class GameManager : MonoBehaviour
         end = GameObject.FindGameObjectWithTag("end");
         bossHorse = GameObject.FindGameObjectWithTag("BossHorse");
         road = GameObject.FindGameObjectWithTag("road");
-    }
-    void Start()
-    {
-        startCount = 3;
-        state = GameState.Idle;
-
         //LoadGame
         var gameData = SaveSystem.LoadGame();
         if (gameData != null)
         {
             HorseSkin = gameData.horseSkin;
             totalEnemyCatch = gameData.totalEnemy;
-            
+            stageSave = gameData.stageSave;
+            allClear = gameData.allClear;
+
             soundscri.SoundButton(gameData.soundSave);
+            if (gameData.bossRun)
+            {
+                horse.GetComponent<Horse>().SpeedUpValue += 1f;
+            }
         }
-        else if(gameData.bossRun)
-        {
-            horse.GetComponent<Horse>().SpeedUpValue += 1f;
-        }
+    }
+    void Start()
+    {
+        startCount = 3;
+        state = GameState.Idle;
+
+        ////LoadGame
+        //var gameData = SaveSystem.LoadGame();
+        //if (gameData != null)
+        //{
+        //    HorseSkin = gameData.horseSkin;
+        //    totalEnemyCatch = gameData.totalEnemy;
+        //    stageSave = gameData.stageSave;
+        //    allClear = gameData.allClear;
+
+        //    soundscri.SoundButton(gameData.soundSave);
+        //    if(gameData.bossRun)
+        //    {
+        //        horse.GetComponent<Horse>().SpeedUpValue += 1f;
+        //    }
+        //}
     }
 
     void Update()
@@ -505,6 +524,10 @@ public class GameManager : MonoBehaviour
                 totalEnemyCatch += enemyCatch;
                 stageSave = sceanscri.NextIndex;
                 soundSave = soundscri.soundOnOff.isOn;
+                if(sceanscri.CurIndex == 30)
+                {
+                    allClear = true;
+                }
                 SaveSystem.SaveGame(this);
 
                 justOne = true;
@@ -539,7 +562,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BossRun:
                 bossRun = true;
-                SaveSystem.SaveGame(this);
+                SaveGame();
                 break;
             default:
                 break;
@@ -609,5 +632,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("finishdirecting");
         finishDirecting = true;
     }
-    
+    public void SaveGame()
+    {
+        stageSave = sceanscri.CurIndex;
+        SaveSystem.SaveGame(this);
+    }
 }

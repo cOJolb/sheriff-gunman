@@ -8,6 +8,13 @@ public class SceanScript : MonoBehaviour
     static int sceneindex;
     static int nextindex;
     static int index;
+    public int CurIndex
+    {
+        get
+        {
+            return sceneindex;
+        }
+    }
     public int NextIndex
     {
         get
@@ -18,7 +25,14 @@ public class SceanScript : MonoBehaviour
     private void Start()
     {
         sceneindex = SceneManager.GetActiveScene().buildIndex;
-        nextindex = sceneindex+1;
+        if (sceneindex == 30 || GameManager.instance.allClear)
+        {
+            nextindex = Random.Range(20, 30);
+        }
+        else
+        {
+            nextindex = sceneindex + 1;
+        }
     }
     private void Update()
     {
