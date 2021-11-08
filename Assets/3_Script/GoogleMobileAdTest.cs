@@ -110,16 +110,22 @@ public class GoogleMobileAdTest : MonoBehaviour
         //retryAd.OnAdOpening += HandleRewardedAdOpening;
         retryAd.OnAdClosed += ClosedAdRetry;
         retryAd.OnAdFailedToLoad += FailedToRoadRewardAd;
-        retryAd.OnUserEarnedReward += HandleUserEarnedReward;
+        retryAd.OnUserEarnedReward += RetryReward;
         AdRequest request = new AdRequest.Builder().Build();
         retryAd.LoadAd(request);
     }
     public static void ClosedAdRetry(object sender, EventArgs args)
     {
-        GameManager.instance.state = GameManager.GameState.ReStart;
+        //GameManager.instance.state = GameManager.GameState.ReStart;
         RequestRetryAd();
     }
-
+    public static void RetryReward(object sender, Reward args)
+    {
+        string type = args.Type;
+        double amount = args.Amount;
+        GameManager.instance.state = GameManager.GameState.ReStart;
+        //reward.text = "received for " + amount.ToString() + " " + type;
+    }
     public static void RequestGoodsAd()
     {
         if (goodsAd != null)
@@ -131,15 +137,23 @@ public class GoogleMobileAdTest : MonoBehaviour
         //goodsAd.OnAdOpening += HandleRewardedAdOpening;
         goodsAd.OnAdClosed += ClosedAdGoods;
         goodsAd.OnAdFailedToLoad += FailedToRoadRewardAd;
-        goodsAd.OnUserEarnedReward += HandleUserEarnedReward;
+        goodsAd.OnUserEarnedReward += GoodsReward;
         AdRequest request = new AdRequest.Builder().Build();
         goodsAd.LoadAd(request);
     }
     public static void ClosedAdGoods(object sender, EventArgs args)
     {
+        //GameManager.instance.totalEnemyCatch += 1;
+        //GameManager.instance.SaveGame();
+        RequestGoodsAd();
+    }
+    public static void GoodsReward(object sender, Reward args)
+    {
+        string type = args.Type;
+        double amount = args.Amount;
         GameManager.instance.totalEnemyCatch += 1;
         GameManager.instance.SaveGame();
-        RequestGoodsAd();
+        //reward.text = "received for " + amount.ToString() + " " + type;
     }
     public static void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
@@ -157,11 +171,10 @@ public class GoogleMobileAdTest : MonoBehaviour
         ////rewardButton.interactable = false;
         isFailed = false;
     }
-
-    public static void HandleUserEarnedReward(object sender, Reward args)
-    {
-        string type = args.Type;
-        double amount = args.Amount;
-        //reward.text = "received for " + amount.ToString() + " " + type;
-    }
+    //public static void HandleUserEarnedReward(object sender, Reward args)
+    //{
+    //    string type = args.Type;
+    //    double amount = args.Amount;
+    //    //reward.text = "received for " + amount.ToString() + " " + type;
+    //}
 }
