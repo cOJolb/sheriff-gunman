@@ -16,7 +16,7 @@ public class CameraMove : MonoBehaviour
     Transform bosshorse;
     Transform cowboy;
     Vector3 targetPos;
-    Quaternion runRotate;
+    Quaternion runRotate;//¿Ã∞« ø÷ ∏∏µÎ ?
 
     Vector3 prevPos;
     Quaternion prevRotate;
@@ -63,6 +63,8 @@ public class CameraMove : MonoBehaviour
             case GameManager.GameState.Trace:
                 //transform.position = playerEye.transform.position;
                 //transform.position += transform.up * 0.2f;
+                targetPos = new Vector3(HorseTarget.position.x, HorseTarget.position.y + height, HorseTarget.position.z) - HorseTarget.forward * distance;
+                transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
 
                 //transform.LookAt(BossHorseTarget);
                 break;
@@ -138,7 +140,7 @@ public class CameraMove : MonoBehaviour
                 if(GameManager.instance.PrevState == GameManager.GameState.Trace)
                 {
                     transform.position = prevPos;
-                    transform.rotation = transform.rotation;
+                    transform.rotation = prevRotate;
                     GameManager.instance.FinishDirecting();
                 }
                 break;
