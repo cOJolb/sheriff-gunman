@@ -92,8 +92,8 @@ public class Player : MonoBehaviour
                         follow.motion.offset = new Vector2(follow.motion.offset.x + touch.deltaPosition.x * 0.01f, follow.motion.offset.y);
                         //transform.position += transform.right * touch.deltaPosition.x * 0.01f;
                     }
-#endif
                 }
+#endif
                 break;
             case GameManager.GameState.Boss:
                 break;

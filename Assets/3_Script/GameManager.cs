@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(state);
+        //Debug.Log(state);
         //Debug.Log(enemyCatch);
         switch (state)
         {
